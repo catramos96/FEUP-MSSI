@@ -1,0 +1,2 @@
+
+-DCATKIN_DEVEL_PREFIX=/media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/devel -DCMAKE_INSTALL_PREFIX=/media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/install -G Unix Makefiles
