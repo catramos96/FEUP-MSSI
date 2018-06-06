@@ -7,6 +7,7 @@
 ```sh
 # terminal 1
 $ cd [path_to_workspace]
+$ rm -rf build devel # clean workspace configurations
 $ catkin_make 
 $ source devel/setup.bash
 $ roscore #init master node
