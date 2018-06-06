@@ -1,2 +1,2 @@
 integration
--DCATKIN_DEVEL_PREFIX=/home/catarina/Desktop/ros/devel -DCMAKE_INSTALL_PREFIX=/home/catarina/Desktop/ros/install -G Unix Makefiles
+-DCATKIN_DEVEL_PREFIX=/home/catarina/Desktop/FEUP/FEUP-MSSI/ROS/devel -DCMAKE_INSTALL_PREFIX=/home/catarina/Desktop/FEUP/FEUP-MSSI/ROS/install -G Unix Makefiles
