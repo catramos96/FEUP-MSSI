@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/src
+CMAKE_SOURCE_DIR = /home/catarina/Desktop/ros/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build
+CMAKE_BINARY_DIR = /home/catarina/Desktop/ros/build
 
 # Utility rule file for doxygen.
 
@@ -67,6 +67,6 @@ CMakeFiles/doxygen.dir/clean:
 .PHONY : CMakeFiles/doxygen.dir/clean
 
 CMakeFiles/doxygen.dir/depend:
-	cd /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/src /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/src /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build/CMakeFiles/doxygen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/catarina/Desktop/ros/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/catarina/Desktop/ros/src /home/catarina/Desktop/ros/src /home/catarina/Desktop/ros/build /home/catarina/Desktop/ros/build /home/catarina/Desktop/ros/build/CMakeFiles/doxygen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/doxygen.dir/depend
 

@@ -1,24 +1,24 @@
 Determining if the pthread_create exist failed with the following output:
-Change Dir: /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build/CMakeFiles/CMakeTmp
+Change Dir: /home/catarina/Desktop/ros/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_5d350/fast"
-/usr/bin/make -f CMakeFiles/cmTC_5d350.dir/build.make CMakeFiles/cmTC_5d350.dir/build
-make[1]: Entering directory '/media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_5d350.dir/CheckSymbolExists.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_5d350.dir/CheckSymbolExists.c.o   -c /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTC_5d350
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5d350.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_5d350.dir/CheckSymbolExists.c.o  -o cmTC_5d350 -rdynamic 
-CMakeFiles/cmTC_5d350.dir/CheckSymbolExists.c.o: In function `main':
+Run Build Command:"/usr/bin/make" "cmTC_fc2cb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fc2cb.dir/build.make CMakeFiles/cmTC_fc2cb.dir/build
+make[1]: Entering directory '/home/catarina/Desktop/ros/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fc2cb.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_fc2cb.dir/CheckSymbolExists.c.o   -c /home/catarina/Desktop/ros/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_fc2cb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fc2cb.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_fc2cb.dir/CheckSymbolExists.c.o  -o cmTC_fc2cb -rdynamic 
+CMakeFiles/cmTC_fc2cb.dir/CheckSymbolExists.c.o: In function `main':
 CheckSymbolExists.c:(.text+0x16): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_5d350.dir/build.make:97: recipe for target 'cmTC_5d350' failed
-make[1]: *** [cmTC_5d350] Error 1
-make[1]: Leaving directory '/media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_5d350/fast' failed
-make: *** [cmTC_5d350/fast] Error 2
+CMakeFiles/cmTC_fc2cb.dir/build.make:97: recipe for target 'cmTC_fc2cb' failed
+make[1]: *** [cmTC_fc2cb] Error 1
+make[1]: Leaving directory '/home/catarina/Desktop/ros/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_fc2cb/fast' failed
+make: *** [cmTC_fc2cb/fast] Error 2
 
-File /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /home/catarina/Desktop/ros/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
 #include <pthread.h>
 
@@ -34,22 +34,22 @@ int main(int argc, char** argv)
 }
 
 Determining if the function pthread_create exists in the pthreads failed with the following output:
-Change Dir: /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build/CMakeFiles/CMakeTmp
+Change Dir: /home/catarina/Desktop/ros/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_36162/fast"
-/usr/bin/make -f CMakeFiles/cmTC_36162.dir/build.make CMakeFiles/cmTC_36162.dir/build
-make[1]: Entering directory '/media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_36162.dir/CheckFunctionExists.c.o
-/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_36162.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
-Linking C executable cmTC_36162
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_36162.dir/link.txt --verbose=1
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_36162.dir/CheckFunctionExists.c.o  -o cmTC_36162 -rdynamic -lpthreads 
+Run Build Command:"/usr/bin/make" "cmTC_9e5c2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9e5c2.dir/build.make CMakeFiles/cmTC_9e5c2.dir/build
+make[1]: Entering directory '/home/catarina/Desktop/ros/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9e5c2.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_9e5c2.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_9e5c2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9e5c2.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_9e5c2.dir/CheckFunctionExists.c.o  -o cmTC_9e5c2 -rdynamic -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_36162.dir/build.make:97: recipe for target 'cmTC_36162' failed
-make[1]: *** [cmTC_36162] Error 1
-make[1]: Leaving directory '/media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_36162/fast' failed
-make: *** [cmTC_36162/fast] Error 2
+CMakeFiles/cmTC_9e5c2.dir/build.make:97: recipe for target 'cmTC_9e5c2' failed
+make[1]: *** [cmTC_9e5c2] Error 1
+make[1]: Leaving directory '/home/catarina/Desktop/ros/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_9e5c2/fast' failed
+make: *** [cmTC_9e5c2/fast] Error 2
 
 

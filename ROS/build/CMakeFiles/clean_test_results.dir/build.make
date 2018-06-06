@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/src
+CMAKE_SOURCE_DIR = /home/catarina/Desktop/ros/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build
+CMAKE_BINARY_DIR = /home/catarina/Desktop/ros/build
 
 # Utility rule file for clean_test_results.
 
@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build
 include CMakeFiles/clean_test_results.dir/progress.make
 
 CMakeFiles/clean_test_results:
-	/usr/bin/python /opt/ros/lunar/share/catkin/cmake/test/remove_test_results.py /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build/test_results
+	/usr/bin/python /opt/ros/lunar/share/catkin/cmake/test/remove_test_results.py /home/catarina/Desktop/ros/build/test_results
 
 clean_test_results: CMakeFiles/clean_test_results
 clean_test_results: CMakeFiles/clean_test_results.dir/build.make
@@ -71,6 +71,6 @@ CMakeFiles/clean_test_results.dir/clean:
 .PHONY : CMakeFiles/clean_test_results.dir/clean
 
 CMakeFiles/clean_test_results.dir/depend:
-	cd /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/src /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/src /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build /media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build/CMakeFiles/clean_test_results.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/catarina/Desktop/ros/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/catarina/Desktop/ros/src /home/catarina/Desktop/ros/src /home/catarina/Desktop/ros/build /home/catarina/Desktop/ros/build /home/catarina/Desktop/ros/build/CMakeFiles/clean_test_results.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/clean_test_results.dir/depend
 

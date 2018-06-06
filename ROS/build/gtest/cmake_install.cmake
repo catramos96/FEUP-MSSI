@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/install")
+  set(CMAKE_INSTALL_PREFIX "/home/catarina/Desktop/ros/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build/gtest/gtest/cmake_install.cmake")
+  include("/home/catarina/Desktop/ros/build/gtest/gtest/cmake_install.cmake")
 
 endif()
 
