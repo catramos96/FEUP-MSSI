@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<nodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/nodes_file.xsd">
-    <node id="1" x="-250.0" y="0.0" />
-    <node id="2" x="+250.0" y="0.0" />
-    <node id="3" x="+251.0" y="0.0" />
+
+<!-- generated on Qui 26 Abr 2018 00:07:03 WEST by Netedit Version 0.32.0
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <sumo-net-file value="/home/william/Desktop/FEUP-MSSI/SUMO/data/hello.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="/home/william/Desktop/FEUP-MSSI/SUMO/data/hello.net.xml"/>
+        <junctions.join-output value="/home/william/Desktop/FEUP-MSSI/SUMO/data/hello.nod.xml"/>
+    </output>
+
+    <processing>
+        <no-turnarounds value="true"/>
+        <offset.disable-normalization value="true"/>
+        <lefthand value="false"/>
+        <junctions.corner-detail value="0"/>
+        <rectangular-lane-cut value="false"/>
+        <walkingareas value="false"/>
+    </processing>
+
+    <visualisation>
+        <registry-viewport value="true"/>
+    </visualisation>
+
+</configuration>
+-->
+
+<nodes version="0.27" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/nodes_file.xsd">
 </nodes>
