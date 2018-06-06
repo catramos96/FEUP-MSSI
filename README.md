@@ -4,6 +4,14 @@
 
 ### Run
 
+##### Script:
+```sh
+$ cd [path_to_workspace]
+$ python run.py
+```
+
+##### Manually:
+
 ```sh
 # terminal 1
 $ cd [path_to_workspace]
