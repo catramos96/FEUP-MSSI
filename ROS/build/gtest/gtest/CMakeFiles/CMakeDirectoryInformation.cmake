@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/usr/src/gtest")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/catarina/Desktop/FEUP/FEUP-MSSI/ROS/build")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)

@@ -19,9 +19,9 @@ except ImportError:
             break
     from catkin.environment_cache import generate_environment_script
 
-code = generate_environment_script('/media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/devel/env.sh')
+code = generate_environment_script('/home/catarina/Desktop/FEUP/FEUP-MSSI/ROS/devel/env.sh')
 
-output_filename = '/media/catarina/Ubuntu/FEUP/FEUP-MSSI/ROS/build/catkin_generated/setup_cached.sh'
+output_filename = '/home/catarina/Desktop/FEUP/FEUP-MSSI/ROS/build/catkin_generated/setup_cached.sh'
 with open(output_filename, 'w') as f:
     #print('Generate script for cached setup "%s"' % output_filename)
     f.write('\n'.join(code))
