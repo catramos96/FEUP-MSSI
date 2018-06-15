@@ -4,60 +4,14 @@
   <vType accel="2.0" decel="6.0" id="CarB" length="7.5" minGap="2.5" maxSpeed="50.0" sigma="0.5" />
   <vType accel="1.0" decel="5.0" id="CarC" length="5.0" minGap="2.5" maxSpeed="40.0" sigma="0.5" />
   <vType accel="1.0" decel="5.0" id="CarD" length="7.5" minGap="2.5" maxSpeed="30.0" sigma="0.5" />
-
+   <vType id="reroutingType">
+       <param key="has.rerouting.device" value="true"/>
+   </vType>
   <route id="route01" edges="E12 E23 E34 E45 E56 E67 E74 E41"/>
   <route id="route02" edges="E32 E21 E14 E47 E76 E65 E54 E43"/>
   <route id="route03" edges="E56 E67 E74 E41 E12 E23 E34 E45"/>
   <route id="route04" edges="E76 E65 E54 E43 E32 E21 E14 E47"/>
 
-  <vehicle depart="0" id="veh0" route="route01" type="CarA" color="1,0,0" /> 
-  <vehicle depart="0" id="veh1" route="route02" type="CarA" />
-  <vehicle depart="0" id="veh2" route="route03" type="CarA" />
-  <vehicle depart="0" id="veh3" route="route04" type="CarA" />
-  <vehicle depart="0" id="veh12" route="route01" type="CarB" color="1,0,0" /> 
-  <vehicle depart="0" id="veh13" route="route02" type="CarB" />
-  <vehicle depart="0" id="veh14" route="route03" type="CarB" />
-  <vehicle depart="0" id="veh15" route="route04" type="CarB" />
-  <vehicle depart="0" id="veh24" route="route01" type="CarC" color="1,0,0" /> 
-  <vehicle depart="0" id="veh25" route="route02" type="CarC" />
-  <vehicle depart="0" id="veh26" route="route03" type="CarC" />
-  <vehicle depart="0" id="veh27" route="route04" type="CarC" />
-  <vehicle depart="0" id="veh36" route="route01" type="CarD" color="1,0,0" /> 
-  <vehicle depart="0" id="veh37" route="route02" type="CarD" />
-  <vehicle depart="0" id="veh38" route="route03" type="CarD" />
-  <vehicle depart="0" id="veh39" route="route04" type="CarD" />
-  <vehicle depart="30" id="veh48" route="route01" type="CarA" color="1,0,0" /> 
-  <vehicle depart="30" id="veh49" route="route02" type="CarA" />
-  <vehicle depart="30" id="veh50" route="route03" type="CarA" />
-  <vehicle depart="30" id="veh51" route="route04" type="CarA" />
-  <vehicle depart="30" id="veh60" route="route01" type="CarB" color="1,0,0" /> 
-  <vehicle depart="30" id="veh61" route="route02" type="CarB" />
-  <vehicle depart="30" id="veh62" route="route03" type="CarB" />
-  <vehicle depart="30" id="veh63" route="route04" type="CarB" />
-  <vehicle depart="30" id="veh72" route="route01" type="CarC" color="1,0,0" /> 
-  <vehicle depart="30" id="veh73" route="route02" type="CarC" />
-  <vehicle depart="30" id="veh74" route="route03" type="CarC" />
-  <vehicle depart="30" id="veh75" route="route04" type="CarC" />
-  <vehicle depart="30" id="veh84" route="route01" type="CarD" color="1,0,0" /> 
-  <vehicle depart="30" id="veh85" route="route02" type="CarD" />
-  <vehicle depart="30" id="veh86" route="route03" type="CarD" />
-  <vehicle depart="30" id="veh87" route="route04" type="CarD" />
-  <vehicle depart="60" id="veh96" route="route01" type="CarA" color="1,0,0" /> 
-  <vehicle depart="60" id="veh97" route="route02" type="CarA" />
-  <vehicle depart="60" id="veh98" route="route03" type="CarA" />
-  <vehicle depart="60" id="veh99" route="route04" type="CarA" />
-  <vehicle depart="60" id="veh108" route="route01" type="CarB" color="1,0,0" /> 
-  <vehicle depart="60" id="veh109" route="route02" type="CarB" />
-  <vehicle depart="60" id="veh110" route="route03" type="CarB" />
-  <vehicle depart="60" id="veh111" route="route04" type="CarB" />
-  <vehicle depart="60" id="veh120" route="route01" type="CarC" color="1,0,0" /> 
-  <vehicle depart="60" id="veh121" route="route02" type="CarC" />
-  <vehicle depart="60" id="veh122" route="route03" type="CarC" />
-  <vehicle depart="60" id="veh123" route="route04" type="CarC" />
-  <vehicle depart="60" id="veh132" route="route01" type="CarD" color="1,0,0" /> 
-  <vehicle depart="60" id="veh133" route="route02" type="CarD" />
-  <vehicle depart="60" id="veh134" route="route03" type="CarD" />
-  <vehicle depart="60" id="veh135" route="route04" type="CarD" />
-  <vehicle depart="90" id="veh144" route="route01" type="CarA" color="1,0,0" /> 
+ 
   
 </routes>
