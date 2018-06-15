@@ -32,7 +32,7 @@ except ImportError:
         "please declare environment variable 'SUMO_HOME' as the root directory of your sumo installation (it should contain folders 'bin', 'tools' and 'docs')")
 
 netconvertBinary = checkBinary('netconvert')
-sumoBinary = checkBinary('sumo')
+sumoBinary = checkBinary('sumo-gui')
 # build/check network
 retcode = subprocess.call(
     [netconvertBinary, "-c", "data/hello.netccfg"], stdout=sys.stdout, stderr=sys.stderr)

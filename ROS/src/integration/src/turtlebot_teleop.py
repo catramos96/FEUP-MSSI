@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
+from client import Connection
 
 import roslib
 roslib.load_manifest('integration')
@@ -12,6 +13,7 @@ import sys
 import select
 import termios
 import tty
+import json
 
 msg = """
 Reading from the keyboard  and Publishing to Twist!
@@ -69,6 +71,8 @@ speedBindings = {
     'c': (1, .9),
 }
 
+conn = Connection()
+
 
 def getKey():
     tty.setraw(sys.stdin.fileno())
@@ -110,6 +114,11 @@ if __name__ == "__main__":
                 th = moveBindings[key][3]
 
                 print(key + " - [%d,%d,%d,%d]" % (x,y,z,th))
+                if(key == "i"):
+                    global conn
+                    info = {"move": key}
+                    msg = json.dumps(info)
+                    conn.sendMovement(msg)
             elif key in speedBindings.keys():
                 speed = speed * speedBindings[key][0]
                 turn = turn * speedBindings[key][1]
