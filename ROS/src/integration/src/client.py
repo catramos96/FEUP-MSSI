@@ -21,7 +21,7 @@ class Connection:
     
     def start(self):
         self.sendMessage("start")
-        return self.receive()
+        return self.receiveResponse()
 
     def sendMovement(self, msg):
         self.sendMessage(msg)
