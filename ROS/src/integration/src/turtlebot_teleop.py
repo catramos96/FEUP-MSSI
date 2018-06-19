@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 from client import Connection
-
+from enum import Enum
 import roslib
 roslib.load_manifest('integration')
 import rospy
@@ -71,8 +71,18 @@ speedBindings = {
     'c': (1, .9),
 }
 
-conn = Connection()
+class MOVEMENT(Enum):
+    FORWARD = 0
+    BACKWARD = 1
+    LEFT = 2
+    RIGHT = 3
 
+movementsCode = {
+    'i': MOVEMENT.FORWARD,
+    ',': MOVEMENT.BACKWARD,
+    'j': MOVEMENT.LEFT,
+    'l': MOVEMENT.RIGHT,
+}
 
 def getKey():
     tty.setraw(sys.stdin.fileno())
@@ -101,7 +111,9 @@ if __name__ == "__main__":
     z = 0
     th = 0
     status = 0
-
+    
+    conn = Connection()
+    conn.start()
     try:
         print(msg)
         print(vels(speed, turn))
@@ -114,11 +126,9 @@ if __name__ == "__main__":
                 th = moveBindings[key][3]
 
                 print(key + " - [%d,%d,%d,%d]" % (x,y,z,th))
-                if(key == "i"):
-                    global conn
-                    info = {"move": key}
-                    msg = json.dumps(info)
-                    conn.sendMovement(msg)
+                info = {"move": movementsCode[key].value}
+                msg = json.dumps(info)
+                conn.sendMovement(msg)
             elif key in speedBindings.keys():
                 speed = speed * speedBindings[key][0]
                 turn = turn * speedBindings[key][1]

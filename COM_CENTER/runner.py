@@ -13,7 +13,8 @@ sumoCmd = []
 import traci
 import traci.constants as tc
 import curses
-
+import json
+from server import Server, Movement
 
 screen = curses.initscr()
 
@@ -34,7 +35,8 @@ traci.vehicle.add("newVeh","trip",typeID="reroutingType")
 traci.vehicle.subscribe("newVeh", (tc.VAR_ROAD_ID, tc.VAR_LANEPOSITION))
 
 traci.vehicle.setColor("newVeh", (100,254,100,254))
-
+server = Server()
+server.acceptConnection()
 
 def moveCar(carID, x, y, angle):
     keepRoute = 2
@@ -52,19 +54,25 @@ print(traci.vehicle.getSubscriptionResults("newVeh"))
 for step in range(1000000):
    print("step", step)
    traci.simulationStep()
-   char = screen.getch()
-
-   if char == ord('q'):
-       break
-   elif char == curses.KEY_RIGHT:
-       moveCar('newVeh',1,0, 40)
-   elif char == curses.KEY_DOWN:
-       moveCar('newVeh',0,-1, 40)
-   elif char == curses.KEY_LEFT:
-       moveCar('newVeh',-1, 0, 40)
-   elif char == curses.KEY_UP:
-       moveCar('newVeh',0,1, 40)
-
+   #char = screen.getch()
+   msg = server.receiveMessage()
+   if(msg == "start"):
+       server.sendMessage("ok")
+   else:
+       info = json.loads(msg)
+       if("move" in info):
+           move = info["move"]
+           if move == ord('q'):
+               break
+           elif move == Movement.RIGHT:
+               moveCar('newVeh',1,0, 40)
+           elif move == Movement.BACKWARD:
+               moveCar('newVeh',0,-1, 40)
+           elif move == Movement.LEFT:
+               moveCar('newVeh',-1, 0, 40)
+           elif move == Movement.FORWARD:
+               moveCar('newVeh',0,1, 40)
+           server.sendMessage("ok")
    print(traci.vehicle.getSubscriptionResults("newVeh"))
    print(traci.vehicle.getPosition("newVeh"))
 

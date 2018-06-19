@@ -1,10 +1,14 @@
 #!/usr/bin/env python
-
+from enum import Enum
 import socket
 import signal
 import sys
 
-
+class Movement(Enum):
+    FORWARD = 0
+    BACKWARD = 1
+    LEFT = 2
+    RIGHT = 3
 
 class Server:
     
