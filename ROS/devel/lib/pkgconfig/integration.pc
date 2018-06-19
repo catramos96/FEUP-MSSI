@@ -1,8 +1,0 @@
-prefix=/home/catarina/Desktop/FEUP/FEUP-MSSI/ROS/devel
-
-Name: integration
-Description: Description of integration
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/catarina/Desktop/FEUP/FEUP-MSSI/ROS/devel/lib 
-Requires: 
