@@ -25,10 +25,7 @@ def handleMovementMessage(info, controller):
 
     move = info["movement"]
 
-    if move == ord('q'):
-        return
-    
-    elif move == Movement.RIGHT.value:
+    if move == Movement.RIGHT.value:
         controller.setIncrement(0,1)
 
     elif move == Movement.LEFT.value:
