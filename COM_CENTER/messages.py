@@ -4,6 +4,9 @@ import traci
 import traci.constants as tc
 import curses
 import json
+import math
+import numpy as np
+
 
 class MsgType(Enum):
     MOVEMENT = 0
@@ -14,39 +17,50 @@ class MsgType(Enum):
     INTEGRATION_REQUEST = 5
     UNKNOWN = 6
 
-def moveCar(car_id, x, y, angle):
-    keep_route = 2
-    edge_id = ''
-    step_info = traci.vehicle.getSubscriptionResults(car_id)
-    lane = -1
-    pos = traci.vehicle.getPosition(car_id)
-    old_angle = traci.vehicle.getAngle(car_id)
+'''
+Handle Messages Received
+'''
 
-    traci.vehicle.moveToXY(
-        car_id, edge_id, lane, pos[0] + x, pos[1] + y, old_angle + angle, keep_route)
-    return
+def handleMovementMessage(info, controller):
 
-def handleMovementMessage(info):
     move = info["movement"]
+
     if move == ord('q'):
         return
+    
     elif move == Movement.RIGHT.value:
-        moveCar("newVeh", 1, 0, 0)
-    elif move == Movement.BACKWARD.value:
-        moveCar("newVeh", 0, -1, 0)
+        controller.setIncrement(0,0,1)
+
     elif move == Movement.LEFT.value:
-        moveCar("newVeh", -1, 0, 0)
+        controller.setIncrement(0,0,-1)
+    
+    '''
     elif move == Movement.FORWARD.value:
-        moveCar("newVeh", 0, 1, 0)
+        traci.vehicle.moveToXY(
+            controller.id, edge_id, lane, pos[0] + controller.speed*(math.sin(old_angle)), pos[1] + config.speed*(math.cos(old_angle)), old_angle, keep_route)
+
+    elif move == Movement.BACKWARD.value:
+        traci.vehicle.moveToXY(
+            controller.id, edge_id, lane, pos[0] + config.speed*math.cos(old_angle), pos[1] + config.speed*math.sin(old_angle), old_angle, keep_route)
+
+    
     elif move == Movement.FORWARD_LEFT.value:
-        moveCar("newVeh", -1, 1, 0)
+        traci.vehicle.moveToXY(
+            car_id, edge_id, lane, pos[0] + x, pos[1] + y, old_angle + angular, keep_route)
+
     elif move == Movement.FORWARD_RIGHT.value:
-        moveCar("newVeh", 1, 1, 0)
+        traci.vehicle.moveToXY(
+            car_id, edge_id, lane, pos[0] + x, pos[1] + y, old_angle + angle, keep_route)
+
     elif move == Movement.BACKWARD_LEFT.value:
-        moveCar("newVeh", -1, -1, 0)
+        traci.vehicle.moveToXY(
+            car_id, edge_id, lane, pos[0] + x, pos[1] + y, old_angle + angle, keep_route)
     elif move == Movement.BACKWARD_RIGHT.value:
-        moveCar("newVeh", 1, -1, 0)
+        traci.vehicle.moveToXY(
+            car_id, edge_id, lane, pos[0] + x, pos[1] + y, old_angle + angle, keep_route)
+    
     else:
         return
+    '''
 
     # TODO: return approved or not

@@ -20,9 +20,10 @@ CREATING METHODS
 '''
 
 
-def getIntegrationRequestMsg(speed,rotation):
+def getIntegrationRequestMsg(id,speed,rotation):
     content = {
         "type": MsgType.INTEGRATION_REQUEST.value,
+        "id" : id,
         "speed" : speed,
         "rotation":rotation
     }
@@ -30,34 +31,38 @@ def getIntegrationRequestMsg(speed,rotation):
     return msg
 
 
-def getMovementMsg(movement):
+def getMovementMsg(id,movement):
     content = {
         "type": MsgType.MOVEMENT.value,
+        "id" : id,
         "movement": movement
     }
     msg = json.dumps(content)
     return msg
 
 
-def getSpeedMsg(speed):
+def getSpeedMsg(id,speed):
     content = {
         "type": MsgType.SPEED.value,
+        "id" : id,
         "value": speed}
     msg = json.dumps(content)
     return msg
 
 
-def getRotationMsg(rotation):
+def getRotationMsg(id,rotation):
     content = {
         "type": MsgType.ROTATION.value,
+        "id" : id,
         "value": rotation}
     msg = json.dumps(content)
     return msg
 
 
-def getCalibrationMsg(delay):
+def getCalibrationMsg(id,delay):
     content = {
         "type": MsgType.CALIBRATION.value,
+        "id" : id,
         "delay": delay}  # add other parameters if needed
     msg = json.dumps(content)
     return msg

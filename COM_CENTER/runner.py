@@ -17,6 +17,9 @@ import curses
 import json
 from server import Server
 import messages
+import vehicle_controller as vc
+import messages_listener
+from thread import start_new_thread
 
 
 traci.start(["sumo-gui", "-c", "../SUMO/data/hello.sumocfg"])
@@ -63,40 +66,26 @@ def stopAtTrafficLights(car_id, car_lane):
             pp.pprint("yup, ele ta aqui")
     return False
 
-
-cars_directions = []
+step_duration = 10000
 
 trackCarsInJunction()
 addCar("newVeh", "trip", "reroutingType")
+config = vc.VehicleController("newVeh",step_duration)
 
+controllers = [config]  #list of controllers
 
-server = Server()
-server.acceptConnection()
+start_new_thread(messages_listener.listener,(controllers,))
 
-'''
-Processing messages
-'''
 print(traci.vehicle.getSubscriptionResults("newVeh"))
-for step in range(1000000):
-    print("step", step)
-    traci.simulationStep()
-    msg = server.receiveMessage()
-    if(msg == "start"):
-        server.sendMessage("ok")
-    else:
-        print(msg)
-        info = json.loads(msg)
-        if(info["type"] == messages.MsgType.MOVEMENT.value):
-            messages.handleMovementMessage(info)
-            server.sendMessage("ok")
 
-        ''' 
-        elif(info["type"] == messages.MsgType.CALIBRATION.value):
-        # TODO
-        elif(info["type"] == messages.MsgType.ROTATION.value):
-            # TODO
-        elif(info["type"] == messages.MsgType.SPEED.value):
-            # TODO
-        '''
+for step in range(step_duration): 
+
+    for i  in range(0,len(controllers)):
+        controllers[i].step()
+
+    traci.simulationStep()
+
+    
+    
 
 traci.close()

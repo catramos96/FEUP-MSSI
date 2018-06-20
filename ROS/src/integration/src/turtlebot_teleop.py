@@ -106,11 +106,14 @@ def vels(speed, turn):
 
 
 if __name__ == "__main__":
+    id = "newVeh"   #alterar!!!!!!!!!!!!!!!!!!!!!!
     settings = termios.tcgetattr(sys.stdin)
 
     #turtle1/cmd -> turtlesim subscribed
     # alterar para cmd_vel para controlar o verdadeiro
     pub = rospy.Publisher('turtle1/cmd_vel', Twist, queue_size=1)
+
+
     rospy.init_node('turtlebot_teleop')
 
     speed = rospy.get_param("~speed", 0.5)
@@ -135,9 +138,7 @@ if __name__ == "__main__":
                 th = moveBindings[key][3]
 
                 print(key + " - [%d,%d,%d,%d]" % (x,y,z,th))
-                #info = {"move": movementsCode[key].value}
-                #msg = json.dumps(info)
-                msg = messages.getMovementMsg(movementsCode[key].value)
+                msg = messages.getMovementMsg(id,movementsCode[key].value)
                 print(msg)
                 conn.sendMovement(msg)
             elif key in speedBindings.keys():
@@ -164,6 +165,8 @@ if __name__ == "__main__":
             twist.angular.y = 0
             twist.angular.z = th*turn
             pub.publish(twist)
+
+            
 
     except Exception as e:
         print(e)
