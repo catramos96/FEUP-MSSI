@@ -37,24 +37,19 @@ def handleMovementMessage(info, controller):
     elif move == Movement.BACKWARD.value:
         controller.setIncrement(-1,0)
 
-    '''
     elif move == Movement.FORWARD_LEFT.value:
-        traci.vehicle.moveToXY(
-            car_id, edge_id, lane, pos[0] + x, pos[1] + y, old_angle + angular, keep_route)
+        controller.setIncrement(1,-1)
 
     elif move == Movement.FORWARD_RIGHT.value:
-        traci.vehicle.moveToXY(
-            car_id, edge_id, lane, pos[0] + x, pos[1] + y, old_angle + angle, keep_route)
+        controller.setIncrement(1,1)
 
     elif move == Movement.BACKWARD_LEFT.value:
-        traci.vehicle.moveToXY(
-            car_id, edge_id, lane, pos[0] + x, pos[1] + y, old_angle + angle, keep_route)
+        controller.setIncrement(-1,-1)
     elif move == Movement.BACKWARD_RIGHT.value:
-        traci.vehicle.moveToXY(
-            car_id, edge_id, lane, pos[0] + x, pos[1] + y, old_angle + angle, keep_route)
+        controller.setIncrement(-1,1)
     
     else:
         return
-    '''
+    
 
     # TODO: return approved or not
