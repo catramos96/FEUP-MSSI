@@ -66,19 +66,17 @@ def stopAtTrafficLights(car_id, car_lane):
             pp.pprint("yup, ele ta aqui")
     return False
 
-step_duration = 10000
-
 trackCarsInJunction()
 addCar("newVeh", "trip", "reroutingType")
-config = vc.VehicleController("newVeh",step_duration)
 
+config = vc.VehicleController("newVeh")
 controllers = [config]  #list of controllers
 
 start_new_thread(messages_listener.listener,(controllers,))
 
 print(traci.vehicle.getSubscriptionResults("newVeh"))
 
-for step in range(step_duration): 
+while True:
     traci.simulationStep()
 
     for i  in range(0,len(controllers)):

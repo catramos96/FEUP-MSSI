@@ -29,21 +29,18 @@ def handleMovementMessage(info, controller):
         return
     
     elif move == Movement.RIGHT.value:
-        controller.setIncrement(0,0,1)
+        controller.setIncrement(0,1)
 
     elif move == Movement.LEFT.value:
-        controller.setIncrement(0,0,-1)
+        controller.setIncrement(0,-1)
     
-    '''
     elif move == Movement.FORWARD.value:
-        traci.vehicle.moveToXY(
-            controller.id, edge_id, lane, pos[0] + controller.speed*(math.sin(old_angle)), pos[1] + config.speed*(math.cos(old_angle)), old_angle, keep_route)
+        controller.setIncrement(1,0)
 
     elif move == Movement.BACKWARD.value:
-        traci.vehicle.moveToXY(
-            controller.id, edge_id, lane, pos[0] + config.speed*math.cos(old_angle), pos[1] + config.speed*math.sin(old_angle), old_angle, keep_route)
+        controller.setIncrement(-1,0)
 
-    
+    '''
     elif move == Movement.FORWARD_LEFT.value:
         traci.vehicle.moveToXY(
             car_id, edge_id, lane, pos[0] + x, pos[1] + y, old_angle + angular, keep_route)

@@ -23,14 +23,12 @@ def listener(controllers):
         if(msg == "start"):
             server.sendMessage("ok")
         else:
-            print(msg)
             info = json.loads(msg)
             id = info["id"]
 
             controller = getController(id,controllers)
 
             if(controller != -1):
-
 
                 if(info["type"] == messages.MsgType.MOVEMENT.value):
                     messages.handleMovementMessage(info,controller)
