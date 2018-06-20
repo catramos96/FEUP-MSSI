@@ -36,15 +36,17 @@ class VehicleController:
             self.timer = 0
 
     def step(self):
+        #get traci info
+        keep_route = 2
+        edge_id = ''
+        step_info = traci.vehicle.getSubscriptionResults(self.car_id)
+        lane = -1
+        pos = traci.vehicle.getPosition(self.car_id)
+        old_angle = traci.vehicle.getAngle(self.car_id)
+
         if self.timer < self.move_duration and self.increment != [0,0,0]:
 
-            #get traci info
-            keep_route = 2
-            edge_id = ''
-            step_info = traci.vehicle.getSubscriptionResults(self.car_id)
-            lane = -1
-            pos = traci.vehicle.getPosition(self.car_id)
-            old_angle = traci.vehicle.getAngle(self.car_id)
+            
 
             #increment timer
             self.timer = self.timer + self.step_duration
@@ -55,11 +57,19 @@ class VehicleController:
 
             
             print traci.vehicle.getAngle(self.car_id)
-
             print traci.vehicle.getPosition(self.car_id)
 
             if(self.timer >= self.move_duration):
                 self.increment = [0,0,0]
                 self.timer = 0
+
+        #set position
+        traci.vehicle.moveToXY(
+        self.car_id, edge_id, lane, pos[0], pos[1], old_angle, keep_route)
+
+        print traci.vehicle.getAngle(self.car_id)
+        print traci.vehicle.getPosition(self.car_id)
+
+        
 
             

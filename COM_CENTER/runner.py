@@ -79,11 +79,11 @@ start_new_thread(messages_listener.listener,(controllers,))
 print(traci.vehicle.getSubscriptionResults("newVeh"))
 
 for step in range(step_duration): 
+    traci.simulationStep()
 
     for i  in range(0,len(controllers)):
         controllers[i].step()
 
-    traci.simulationStep()
 
     
     
