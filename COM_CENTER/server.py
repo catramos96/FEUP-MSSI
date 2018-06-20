@@ -4,18 +4,24 @@ import socket
 import signal
 import sys
 
+
 class Movement(Enum):
     FORWARD = 0
     BACKWARD = 1
     LEFT = 2
     RIGHT = 3
+    FORWARD_LEFT = 4
+    FORWARD_RIGHT = 5
+    BACKWARD_LEFT = 6
+    BACKWARD_RIGHT = 7
+
 
 class Server:
-    
+
     TCP_IP = '127.0.0.1'
     TCP_PORT = 5005
-    BUFFER_SIZE = 20  # Normally 1024, but we want fast response
-    
+    BUFFER_SIZE = 100  # Normally 1024, but we want fast response
+
     def __init__(self):
         global socket
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -24,7 +30,7 @@ class Server:
 
     def sendMessage(self, message):
         self.conn.send(message.encode('utf-8'))
-    
+
     def acceptConnection(self):
         conn, addr = self.s.accept()
         print('Connection address: ', addr)
@@ -33,7 +39,7 @@ class Server:
     def receiveMessage(self):
         data = self.conn.recv(self.BUFFER_SIZE).decode('utf-8')
         return data
-    
+
     def close(self):
         global socket
         if(self.conn != None):
@@ -46,9 +52,9 @@ class Server:
 
 
 #i = True
-#while (i == True):
+# while (i == True):
 #    data = conn.recv(BUFFER_SIZE).decode('utf-8')
 #    if not data: break
 #    print ("received data: ", data)
 #    sendMessage(conn, data)  # echo
-#conn.close()
+# conn.close()

@@ -14,6 +14,7 @@ import select
 import termios
 import tty
 import json
+import messages
 
 msg = """
 Reading from the keyboard  and Publishing to Twist!
@@ -76,10 +77,18 @@ class MOVEMENT(Enum):
     BACKWARD = 1
     LEFT = 2
     RIGHT = 3
+    FORWARD_LEFT = 4
+    FORWARD_RIGHT = 5
+    BACKWARD_LEFT = 6
+    BACKWARD_RIGHT = 7
 
 movementsCode = {
     'i': MOVEMENT.FORWARD,
+    'o': MOVEMENT.FORWARD_RIGHT,
+    'u': MOVEMENT.FORWARD_LEFT,
     ',': MOVEMENT.BACKWARD,
+    '.': MOVEMENT.BACKWARD_RIGHT,
+    'm': MOVEMENT.BACKWARD_LEFT,
     'j': MOVEMENT.LEFT,
     'l': MOVEMENT.RIGHT,
 }
@@ -126,8 +135,10 @@ if __name__ == "__main__":
                 th = moveBindings[key][3]
 
                 print(key + " - [%d,%d,%d,%d]" % (x,y,z,th))
-                info = {"move": movementsCode[key].value}
-                msg = json.dumps(info)
+                #info = {"move": movementsCode[key].value}
+                #msg = json.dumps(info)
+                msg = messages.getMovementMsg(movementsCode[key].value)
+                print(msg)
                 conn.sendMovement(msg)
             elif key in speedBindings.keys():
                 speed = speed * speedBindings[key][0]
