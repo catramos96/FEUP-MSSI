@@ -30,15 +30,11 @@ def listener(controllers):
 
             if(controller != -1):
 
-                if(info["type"] == messages.MsgType.MOVEMENT.value):
-                    messages.handleMovementMessage(info,controller)
-                    server.sendMessage("ok")
+                print(msg)
 
-                '''
-                elif(info["type"] == messages.MsgType.CALIBRATION.value):
-                # TODO
-                elif(info["type"] == messages.MsgType.ROTATION.value):
-                    # TODO
-                elif(info["type"] == messages.MsgType.SPEED.value):
-                    # TODO
-                '''
+                if(info["type"] == messages.MsgType.MOVEMENT.value):
+                    reply = messages.handleMovementMessage(info,controller)
+                    server.sendMessage(reply)            
+                elif(info["type"] == messages.MsgType.SPEED_ROTATION.value):
+                    reply = messages.handleSpeedRotationMessage(info,controller)
+                    server.sendMessage(reply) 

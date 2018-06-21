@@ -23,7 +23,7 @@ class Connection:
         self.sendMessage("start")
         return self.receiveResponse()
 
-    def sendMovement(self, msg):
+    def sendRequest(self, msg):
         self.sendMessage(msg)
         data = self.receiveResponse()
         return data

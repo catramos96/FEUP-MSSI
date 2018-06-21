@@ -16,7 +16,7 @@ import tty
 import json
 import messages
 
-msg = """
+intro_msg = """
 Reading from the keyboard  and Publishing to Twist!
 ---------------------------
 Moving around:
@@ -127,10 +127,12 @@ if __name__ == "__main__":
     conn = Connection()
     conn.start()
     try:
-        print(msg)
+        print(intro_msg)
         print(vels(speed, turn))
         while(1):
             key = getKey()
+
+            # move
             if key in moveBindings.keys():
                 x = moveBindings[key][0]
                 y = moveBindings[key][1]
@@ -140,15 +142,22 @@ if __name__ == "__main__":
                 print(key + " - [%d,%d,%d,%d]" % (x,y,z,th))
                 msg = messages.getMovementMsg(id,movementsCode[key].value)
                 print(msg)
-                conn.sendMovement(msg)
+                conn.sendRequest(msg)
+
+            # speed and angular
             elif key in speedBindings.keys():
                 speed = speed * speedBindings[key][0]
                 turn = turn * speedBindings[key][1]
 
                 print(vels(speed, turn))
                 if (status == 14):
-                    print(msg)
+                    print(intro_msg)
                 status = (status + 1) % 15
+
+                msg = messages.getSpeedRotationMsg(id,speed,turn)
+                print(msg)
+                conn.sendRequest(msg)
+
             else:
                 x = 0
                 y = 0

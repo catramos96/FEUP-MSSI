@@ -7,12 +7,11 @@ from enum import Enum
 
 class MsgType(Enum):
     MOVEMENT = 0
-    SPEED = 1
-    ROTATION = 2
-    CALIBRATION = 3
-    CONFIG = 4
-    INTEGRATION_REQUEST = 5
-    UNKNOWN = 6
+    SPEED_ROTATION = 1
+    CALIBRATION = 2
+    CONFIG = 3
+    INTEGRATION_REQUEST = 4
+    UNKNOWN = 5
 
 
 '''
@@ -41,20 +40,13 @@ def getMovementMsg(id,movement):
     return msg
 
 
-def getSpeedMsg(id,speed):
+def getSpeedRotationMsg(id,speed,rotation):
     content = {
-        "type": MsgType.SPEED.value,
+        "type": MsgType.SPEED_ROTATION.value,
         "id" : id,
-        "value": speed}
-    msg = json.dumps(content)
-    return msg
-
-
-def getRotationMsg(id,rotation):
-    content = {
-        "type": MsgType.ROTATION.value,
-        "id" : id,
-        "value": rotation}
+        "speed": speed,
+        "rotation": rotation
+    }
     msg = json.dumps(content)
     return msg
 
