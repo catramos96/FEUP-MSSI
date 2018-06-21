@@ -2,4 +2,5 @@ ROS/build/
 ROS/devel/
 COM_CENTER/__pycache__/
 ROS/src/integration/src/__pycache__/
-ROS/src/integration/src/client.pyc
+*.pyc
+ROS/src/CMakeLists.txt

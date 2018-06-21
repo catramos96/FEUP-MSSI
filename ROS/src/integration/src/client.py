@@ -2,6 +2,7 @@
 
 import socket
 from enum import Enum
+from analytics import Timer
 
 class Connection:
     
@@ -14,6 +15,8 @@ class Connection:
     TCP_PORT = 5005
     BUFFER_SIZE = 1024
 
+    timer = Timer()
+
     def __init__(self):
         
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -25,7 +28,9 @@ class Connection:
 
     def sendRequest(self, msg):
         self.sendMessage(msg)
+        timer.start()
         data = self.receiveResponse()
+        timer.end()
         return data
 
     def sendMessage(self, message):
