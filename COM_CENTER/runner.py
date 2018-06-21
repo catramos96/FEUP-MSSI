@@ -13,7 +13,6 @@ sumoCmd = []
 
 import traci
 import traci.constants as tc
-import curses
 import json
 from server import Server
 import messages
@@ -29,7 +28,7 @@ traci.route.add(route, ["E12", "E23"])
 
 resources.trackCarsInJunction()
 
-controllers = []  
+controllers = []
 
 # messages listener
 start_new_thread(messages_listener.listener,(controllers,route,))
@@ -37,10 +36,10 @@ start_new_thread(messages_listener.listener,(controllers,route,))
 
 while True:
     traci.simulationStep()
-    
+
     for i  in range(0,len(controllers)):
         controllers[i].step()
-    
-    
+
+
 
 traci.close()

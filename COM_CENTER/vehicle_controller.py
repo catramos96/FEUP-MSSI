@@ -2,6 +2,7 @@ import os
 import sys
 from server import Server, Movement
 import traci
+import traci.constants as tc
 import math
 import numpy as np
 import resources
@@ -54,17 +55,24 @@ class VehicleController:
             pos = traci.vehicle.getPosition(self.car_id)
             old_angle = traci.vehicle.getAngle(self.car_id)
 
+            x = pos[0] + self.increment[0]*math.cos(math.radians(450-old_angle))
+            y = pos[1] + self.increment[0]*math.sin(math.radians(450-old_angle))
 
-            if self.timer < self.move_duration and self.increment != [0,0]:
+            stop_at_trafficlight = resources.stopAtTrafficLights(self.car_id, step_info[tc.VAR_LANE_ID])
+            collision = resources.collision(self.car_id, [x,y])
+            print("lane", step_info[tc.VAR_LANE_ID])
+            print("para no semaforo? ", self.car_id, stop_at_trafficlight)
+            print("para  por colisao? ", self.car_id, collision)
+            if self.timer < self.move_duration and self.increment != [0,0] and not stop_at_trafficlight and not collision:
 
                 #increment timer
                 self.timer = self.timer + self.step_duration
 
                 #set position
                 traci.vehicle.moveToXY(
-                self.car_id, edge_id, lane, 
-                pos[0] + self.increment[0]*math.cos(math.radians(450-old_angle)), #x
-                pos[1] + self.increment[0]*math.sin(math.radians(450-old_angle)), #y
+                self.car_id, edge_id, lane,
+                x,
+                y,
                 old_angle + self.increment[1], keep_route)      #angle
 
                 if(self.timer >= self.move_duration):
@@ -74,7 +82,3 @@ class VehicleController:
                 #same position
                 traci.vehicle.moveToXY(
                 self.car_id, edge_id, lane, pos[0], pos[1], old_angle, keep_route)
-
-        
-
-            
