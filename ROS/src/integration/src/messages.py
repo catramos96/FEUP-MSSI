@@ -12,17 +12,17 @@ class MsgType(Enum):
     CONFIG = 3
     INTEGRATION_REQUEST = 4
     UNKNOWN = 5
-
+    REPLY_ACCEPTED = 6
+    REPLY_REJECTED = 7
 
 '''
 CREATING METHODS
 '''
 
 
-def getIntegrationRequestMsg(id,speed,rotation):
+def getIntegrationRequestMsg(speed,rotation):
     content = {
         "type": MsgType.INTEGRATION_REQUEST.value,
-        "id" : id,
         "speed" : speed,
         "rotation":rotation
     }

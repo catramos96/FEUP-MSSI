@@ -21,16 +21,12 @@ class Connection:
         
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.connect((self.TCP_IP, self.TCP_PORT))
-    
-    def start(self):
-        self.sendMessage("start")
-        return self.receiveResponse()
 
     def sendRequest(self, msg):
         self.sendMessage(msg)
-        timer.start()
+        self.timer.start()
         data = self.receiveResponse()
-        timer.end()
+        self.timer.end()
         return data
 
     def sendMessage(self, message):

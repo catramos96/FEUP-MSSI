@@ -106,7 +106,6 @@ def vels(speed, turn):
 
 
 if __name__ == "__main__":
-    id = "newVeh"   #alterar!!!!!!!!!!!!!!!!!!!!!!
     settings = termios.tcgetattr(sys.stdin)
 
     #turtle1/cmd -> turtlesim subscribed
@@ -116,8 +115,10 @@ if __name__ == "__main__":
 
     rospy.init_node('turtlebot_teleop')
 
+    id = ''
     speed = rospy.get_param("~speed", 0.5)
     turn = rospy.get_param("~turn", 1.0)
+
     x = 0
     y = 0
     z = 0
@@ -125,7 +126,21 @@ if __name__ == "__main__":
     status = 0
     
     conn = Connection()
-    conn.start()
+
+    # Establish connection
+    msg = messages.getIntegrationRequestMsg(speed,turn)
+    while 1:
+        reply = conn.sendRequest(msg)
+        print(reply)
+        info = json.loads(reply)
+        if(info["type"] == messages.MsgType.REPLY_ACCEPTED.value):
+            id = info["id"]
+            break
+        else:
+            print("Trying to connect...")
+
+    print("Connection established!")
+
     try:
         print(intro_msg)
         print(vels(speed, turn))

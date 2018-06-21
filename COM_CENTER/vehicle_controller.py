@@ -4,6 +4,7 @@ from server import Server, Movement
 import traci
 import math
 import numpy as np
+import resources
 
 speed_scalar = 10
 
@@ -16,8 +17,12 @@ class VehicleController:
     step_duration = 100000     #100 ms per step
     move_duration = 1000000    #1sec
 
-    def __init__(self,id):
+    inTraci = False
+    route = ""
+
+    def __init__(self,id,route):
         self.car_id = id
+        self.route = route
 
     '''
     direction=1 if forward or =-1 if backward
@@ -35,34 +40,40 @@ class VehicleController:
             self.timer = 0
 
     def step(self):
-        #get traci info
-        keep_route = 2
-        edge_id = ''
-        step_info = traci.vehicle.getSubscriptionResults(self.car_id)
-        lane = -1
-        pos = traci.vehicle.getPosition(self.car_id)
-        old_angle = traci.vehicle.getAngle(self.car_id)
 
+        if(self.inTraci == False):
+            resources.addCar(self.car_id, self.route, "reroutingType")
+            self.inTraci = True
 
-        if self.timer < self.move_duration and self.increment != [0,0]:
-
-            #increment timer
-            self.timer = self.timer + self.step_duration
-
-            #set position
-            traci.vehicle.moveToXY(
-            self.car_id, edge_id, lane, 
-            pos[0] + self.increment[0]*math.cos(math.radians(450-old_angle)), #x
-            pos[1] + self.increment[0]*math.sin(math.radians(450-old_angle)), #y
-            old_angle + self.increment[1], keep_route)      #angle
-
-            if(self.timer >= self.move_duration):
-                self.increment = [0,0]
-                self.timer = 0
         else:
-            #same position
-            traci.vehicle.moveToXY(
-            self.car_id, edge_id, lane, pos[0], pos[1], old_angle, keep_route)
+            #get traci info
+            keep_route = 2
+            edge_id = ''
+            step_info = traci.vehicle.getSubscriptionResults(self.car_id)
+            lane = -1
+            pos = traci.vehicle.getPosition(self.car_id)
+            old_angle = traci.vehicle.getAngle(self.car_id)
+
+
+            if self.timer < self.move_duration and self.increment != [0,0]:
+
+                #increment timer
+                self.timer = self.timer + self.step_duration
+
+                #set position
+                traci.vehicle.moveToXY(
+                self.car_id, edge_id, lane, 
+                pos[0] + self.increment[0]*math.cos(math.radians(450-old_angle)), #x
+                pos[1] + self.increment[0]*math.sin(math.radians(450-old_angle)), #y
+                old_angle + self.increment[1], keep_route)      #angle
+
+                if(self.timer >= self.move_duration):
+                    self.increment = [0,0]
+                    self.timer = 0
+            else:
+                #same position
+                traci.vehicle.moveToXY(
+                self.car_id, edge_id, lane, pos[0], pos[1], old_angle, keep_route)
 
         
 
