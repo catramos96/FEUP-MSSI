@@ -6,6 +6,7 @@ import traci.constants as tc
 import math
 import numpy as np
 import resources
+import socket
 
 speed_scalar = 10
 
@@ -82,3 +83,10 @@ class VehicleController:
                 #same position
                 traci.vehicle.moveToXY(
                 self.car_id, edge_id, lane, pos[0], pos[1], old_angle, keep_route)
+
+    #not tested
+    def send_message(self, msg):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((self.ip, self.port))
+        s.send(msg.encode("utf-8")
+        s.close()

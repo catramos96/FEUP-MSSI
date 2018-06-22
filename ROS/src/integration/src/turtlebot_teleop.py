@@ -6,6 +6,7 @@ from enum import Enum
 import roslib
 roslib.load_manifest('integration')
 import rospy
+from thread import start_new_thread
 
 from geometry_msgs.msg import Twist
 
@@ -15,7 +16,7 @@ import termios
 import tty
 import json
 import messages
-
+import receiver
 intro_msg = """
 Reading from the keyboard  and Publishing to Twist!
 ---------------------------
@@ -107,6 +108,7 @@ def vels(speed, turn):
 
 if __name__ == "__main__":
     settings = termios.tcgetattr(sys.stdin)
+    start_new_thread(receiver.start, ())
 
     #turtle1/cmd -> turtlesim subscribed
     # alterar para cmd_vel para controlar o verdadeiro
@@ -128,7 +130,7 @@ if __name__ == "__main__":
     conn = Connection()
 
     # Establish connection
-    msg = messages.getIntegrationRequestMsg(speed,turn)
+    msg = messages.getIntegrationRequestMsg(speed,turn, receiver.Status.ip, receiver.Status.port)
     while 1:
         reply = conn.sendRequest(msg)
         print(reply)

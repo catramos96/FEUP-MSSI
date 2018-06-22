@@ -2,5 +2,9 @@ ROS/build/
 ROS/devel/
 COM_CENTER/__pycache__/
 ROS/src/integration/src/__pycache__/
-*.pyc
+ROS/src/integration/src/*.pyc
+ROS/src/integration/src/responseTimes.txt
+COM_CENTER/*.pyc
 ROS/src/CMakeLists.txt
+ROS/responseTimes.txt
+

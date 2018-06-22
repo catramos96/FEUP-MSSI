@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import json
 
 #try:
-f = open("responseTimes.txt", "r")
+f = open("ROS/responseTimes.txt", "r")
 times_list = json.load(f)
 f.close()
 x_list = range(1, len(times_list)+1)

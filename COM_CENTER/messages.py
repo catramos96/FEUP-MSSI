@@ -86,11 +86,16 @@ def handleIntegrationRequestMessage(info, controllers,trip,integration_requests)
     speed = info["speed"]
     rotation = info["rotation"]
 
+    ip = info["ip"]
+    port = info["port"]
+
     id = "car_" + `integration_requests`
 
     controller = vehicle_controller.VehicleController(id,trip)
     controller.speed = speed
     controller.angular = rotation
+    controller.ip = ip
+    controller.port = port
 
     controllers.append(controller)
 

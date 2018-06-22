@@ -2,20 +2,22 @@ import time
 import json
 
 class Timer:
-
+    
+    start_time = 0
     time_list = []
 
-    def start(self):
-        self.start_time = time.time()
+    
+def start():
+    Timer.start_time = time.time()
 
 
-    def end(self):
-        end = time.time()
-        diff = end - self.start_time
-        self.time_list.append(diff)
-        self.save()
+def end():
+    end = time.time()
+    diff = end - Timer.start_time
+    Timer.time_list.append(diff)
+    save()
 
-    def save(self):
-        f = open("responseTimes.txt", "w")
-        json.dump(self.time_list, f)
-        f.close()
+def save():
+    f = open("responseTimes.txt", "w")
+    json.dump(Timer.time_list, f)
+    f.close()

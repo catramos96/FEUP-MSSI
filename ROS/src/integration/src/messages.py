@@ -20,11 +20,13 @@ CREATING METHODS
 '''
 
 
-def getIntegrationRequestMsg(speed,rotation):
+def getIntegrationRequestMsg(speed,rotation, ip, port):
     content = {
         "type": MsgType.INTEGRATION_REQUEST.value,
         "speed" : speed,
-        "rotation":rotation
+        "rotation":rotation,
+        "ip": ip,
+        "port": port
     }
     msg = json.dumps(content)
     return msg
