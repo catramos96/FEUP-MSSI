@@ -18,7 +18,9 @@ def start_waiting():
 
 def get_response():
     if(not Status.awaiting_response):
-        return Status.response
+        data = Status.response
+        Status.response = None
+        return data
     else:
         return None
 
@@ -34,7 +36,7 @@ def start():
         conn, addr = s.accept()
         if(conn is not None):
             data = conn.recv(BUFFER_SIZE).decode("utf-8")
-            if(data is not None):
+            if(data is not None or len(data) != 0):
                 #set response so main thread can analyze it
                 analytics.end()
                 Status.response = data

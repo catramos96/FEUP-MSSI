@@ -159,7 +159,7 @@ if __name__ == "__main__":
                 print(key + " - [%d,%d,%d,%d]" % (x,y,z,th))
                 msg = messages.getMovementMsg(id,movementsCode[key].value)
                 print(msg)
-                conn.sendRequest(msg)
+                reply = conn.sendRequest(msg)
 
             # speed and angular
             elif key in speedBindings.keys():
@@ -173,24 +173,28 @@ if __name__ == "__main__":
 
                 msg = messages.getSpeedRotationMsg(id,speed,turn)
                 print(msg)
-                conn.sendRequest(msg)
+                reply = conn.sendRequest(msg)
 
             else:
                 x = 0
                 y = 0
                 z = 0
                 th = 0
+                reply = None
                 if (key == '\x03'):
                     break
-
-            twist = Twist()
-            twist.linear.x = x*speed
-            twist.linear.y = y*speed
-            twist.linear.z = z*speed
-            twist.angular.x = 0
-            twist.angular.y = 0
-            twist.angular.z = th*turn
-            pub.publish(twist)
+            
+            if(reply is not None):
+                info = json.loads(reply)
+                if(info["type"] == messages.MsgType.REPLY_ACCEPTED.value):
+                    twist = Twist()
+                    twist.linear.x = x*speed
+                    twist.linear.y = y*speed
+                    twist.linear.z = z*speed
+                    twist.angular.x = 0
+                    twist.angular.y = 0
+                    twist.angular.z = th*turn
+                    pub.publish(twist)
 
             
 

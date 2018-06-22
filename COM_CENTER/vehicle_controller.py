@@ -7,6 +7,7 @@ import math
 import numpy as np
 import resources
 import socket
+import messages
 
 speed_scalar = 10
 
@@ -79,10 +80,14 @@ class VehicleController:
                 if(self.timer >= self.move_duration):
                     self.increment = [0,0]
                     self.timer = 0
+                msg = messages.getAcceptedMessage(self.car_id)
+                self.send_message(msg)
             else:
                 #same position
                 traci.vehicle.moveToXY(
                 self.car_id, edge_id, lane, pos[0], pos[1], old_angle, keep_route)
+                msg = messages.getRejectedMessage(self.car_id)
+                self.send_message(msg)
 
     #not tested
     def send_message(self, msg):
