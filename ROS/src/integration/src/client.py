@@ -27,19 +27,19 @@ class Connection:
         self.sendMessage(msg)
         ###
         #take this in the future
-        self.timer.start()
+        #self.timer.start()
         #trade with this
-        '''
+        
         receiver.start_waiting()
         while True:
             #maybe put here signals to reduce load
             data = receiver.get_response()
             if(data is not None):
                 break
-                '''
+        
         #this too to take out
-        data = self.receiveResponse()
-        self.timer.end()
+        #data = self.receiveResponse()
+        #self.timer.end()
         ###
         return data
 

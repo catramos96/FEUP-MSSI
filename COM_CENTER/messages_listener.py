@@ -41,16 +41,16 @@ def listener(controllers, route):
 
             if(info["type"] == messages.MsgType.MOVEMENT.value):
                 reply = messages.handleMovementMessage(info, controller)
-                server.sendMessage(reply)
+                #server.sendMessage(reply)
                 #switch later
-                #controller.send_message(reply)
+                controller.send_message(reply)
                 reply_sent = True
 
             elif(info["type"] == messages.MsgType.SPEED_ROTATION.value):
                 reply = messages.handleSpeedRotationMessage(info, controller)
-                server.sendMessage(reply)
+                #server.sendMessage(reply)
                 #switch later
-                #controller.send_message(reply)
+                controller.send_message(reply)
                 reply_sent = True
 
         else:
@@ -60,13 +60,13 @@ def listener(controllers, route):
                 reply = messages.handleIntegrationRequestMessage(info, controllers,route,integration_requests)
 
                 
-                server.sendMessage(reply)
+                #server.sendMessage(reply)
                 #switch later
-                #controller.send_message(reply)
+                controllers[len(controllers)-1].send_message(reply)
                 reply_sent = True
 
         if(reply_sent == False):
             reply = messages.getRejectedMessage(id)
-            server.sendMessage(reply)
+            #server.sendMessage(reply)
             #switch later
-            #controller.send_message(reply)
+            controller.send_message(reply)

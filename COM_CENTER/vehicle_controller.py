@@ -61,9 +61,9 @@ class VehicleController:
 
             stop_at_trafficlight = resources.stopAtTrafficLights(self.car_id, step_info[tc.VAR_LANE_ID])
             collision = resources.collision(self.car_id, [x,y])
-            print("lane", step_info[tc.VAR_LANE_ID])
-            print("para no semaforo? ", self.car_id, stop_at_trafficlight)
-            print("para  por colisao? ", self.car_id, collision)
+            #print("lane", step_info[tc.VAR_LANE_ID])
+            #print("para no semaforo? ", self.car_id, stop_at_trafficlight)
+            #print("para  por colisao? ", self.car_id, collision)
             if self.timer < self.move_duration and self.increment != [0,0] and not stop_at_trafficlight and not collision:
 
                 #increment timer

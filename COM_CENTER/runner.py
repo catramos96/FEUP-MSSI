@@ -22,7 +22,7 @@ from thread import start_new_thread
 import resources
 
 
-traci.start(["sumo-gui", "-c", "../SUMO/data/hello.sumocfg"])
+traci.start(["sumo-gui", "--start", "-c", "../SUMO/data/hello.sumocfg"])
 route = "trip"
 traci.route.add(route, ["E12", "E23"])
 
