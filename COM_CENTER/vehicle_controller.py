@@ -66,6 +66,7 @@ class VehicleController:
             lane = -1
             pos = traci.vehicle.getPosition(self.car_id)
             old_angle = traci.vehicle.getAngle(self.car_id)
+            length = traci.vehicle.getLength(self.car_id)
 
             # calculate next position
             x = pos[0] + self.increment[0] * \
@@ -85,12 +86,36 @@ class VehicleController:
             # - it's not colliding with another vehicle or the colision area is decreasing
             if self.increment != [0, 0] and not stop_at_trafficlight and ((collision and old_distance_value < self.distance) or not collision):
 
-                # set position
+                # perform rotation in center
+                tmp_x = x - length/2 * math.cos(math.radians(450-old_angle))
+                tmp_y = y - length/2 * math.sin(math.radians(450-old_angle))
+                tmp_angle = old_angle
+
                 traci.vehicle.moveToXY(
                     self.car_id, edge_id, lane,
-                    x,
-                    y,
-                    old_angle + self.increment[1], keep_route)  # angle
+                    tmp_x,
+                    tmp_y,
+                    tmp_angle, 
+                    keep_route)
+
+                tmp_angle = tmp_angle + self.increment[1]
+
+                traci.vehicle.moveToXY(
+                    self.car_id, edge_id, lane,
+                    tmp_x,
+                    tmp_y,
+                    tmp_angle, 
+                    keep_route)
+
+                tmp_x = tmp_x + length/2 * math.cos(math.radians(450-tmp_angle))
+                tmp_y = tmp_y + length/2 * math.sin(math.radians(450-tmp_angle))
+
+                traci.vehicle.moveToXY(
+                    self.car_id, edge_id, lane,
+                    tmp_x,
+                    tmp_y,
+                    tmp_angle, 
+                    keep_route)
 
                 self.increment = [0, 0]
 
