@@ -5,13 +5,7 @@ from enum import Enum
 from analytics import Timer
 import receiver
 
-class Connection:
-    
-    FORWARD = 0
-    BACKWARD = 1
-    LEFT = 2
-    RIGHT = 3
-    
+class Connection:    
     TCP_IP = '127.0.0.1'
     TCP_PORT = 5005
     BUFFER_SIZE = 1024

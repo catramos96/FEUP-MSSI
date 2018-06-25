@@ -1,4 +1,3 @@
-from server import Server, Movement
 from enum import Enum
 import traci
 import traci.constants as tc
@@ -7,21 +6,12 @@ import json
 import math
 import numpy as np
 import vehicle_controller
+import msg_resources
 
-
-class MsgType(Enum):
-    MOVEMENT = 0
-    SPEED_ROTATION = 1
-    CALIBRATION = 2
-    CONFIG = 3
-    INTEGRATION_REQUEST = 4
-    UNKNOWN = 5
-    REPLY_ACCEPTED = 6
-    REPLY_REJECTED = 7
 
 def getAcceptedMessage(id):
     content = {
-        "type" : MsgType.REPLY_ACCEPTED.value,
+        "type" : msg_resources.MsgType.REPLY_ACCEPTED.value,
         "id" : id
     }
     msg = json.dumps(content)
@@ -29,7 +19,7 @@ def getAcceptedMessage(id):
 
 def getRejectedMessage(id):
     content = {
-        "type" : MsgType.REPLY_REJECTED.value,
+        "type" : msg_resources.MsgType.REPLY_REJECTED.value,
         "id" : id
     }
     msg = json.dumps(content)
@@ -43,31 +33,29 @@ def handleMovementMessage(info, controller):
 
     move = info["movement"]
 
-    if move == Movement.RIGHT.value:
-        controller.setIncrement(0, 1)
+    if move == msg_resources.Movement.RIGHT.value:
+        controller.setIncrement(0, 1,info)
 
-    elif move == Movement.LEFT.value:
-        controller.setIncrement(0, -1)
+    elif move == msg_resources.Movement.LEFT.value:
+        controller.setIncrement(0, -1,info)
 
-    elif move == Movement.FORWARD.value:
-        controller.setIncrement(1, 0)
+    elif move == msg_resources.Movement.FORWARD.value:
+        controller.setIncrement(1, 0,info)
 
-    elif move == Movement.BACKWARD.value:
-        controller.setIncrement(-1, 0)
+    elif move == msg_resources.Movement.BACKWARD.value:
+        controller.setIncrement(-1, 0,info)
 
-    elif move == Movement.FORWARD_LEFT.value:
-        controller.setIncrement(1, -1)
+    elif move == msg_resources.Movement.FORWARD_LEFT.value:
+        controller.setIncrement(1, -1,info)
 
-    elif move == Movement.FORWARD_RIGHT.value:
-        controller.setIncrement(1, 1)
+    elif move == msg_resources.Movement.FORWARD_RIGHT.value:
+        controller.setIncrement(1, 1,info)
 
-    elif move == Movement.BACKWARD_LEFT.value:
-        controller.setIncrement(-1, 1)
+    elif move == msg_resources.Movement.BACKWARD_LEFT.value:
+        controller.setIncrement(-1, 1,info)
 
-    elif move == Movement.BACKWARD_RIGHT.value:
-        controller.setIncrement(-1, -1)
-
-    return getAcceptedMessage(controller.car_id)
+    elif move == msg_resources.Movement.BACKWARD_RIGHT.value:
+        controller.setIncrement(-1, -1,info)
 
 
 def handleSpeedRotationMessage(info, controller):

@@ -2,18 +2,19 @@
 
 import json
 import turtlebot_teleop
-from enum import Enum
+import resources
 
 
-class MsgType(Enum):
-    MOVEMENT = 0
-    SPEED_ROTATION = 1
-    CALIBRATION = 2
-    CONFIG = 3
-    INTEGRATION_REQUEST = 4
-    UNKNOWN = 5
-    REPLY_ACCEPTED = 6
-    REPLY_REJECTED = 7
+def handleMovementMessage(info,controller):
+
+    move = info["movement"]
+
+    if move >= 0 and move <= 7:
+        key = resources.movementsCodeInverse[move]
+        # update current position
+        controller.move_update(resources.moveBindings[key][0], resources.moveBindings[key][1], resources.moveBindings[key][2], resources.moveBindings[key][3])
+        controller.move()
+    return
 
 '''
 CREATING METHODS
@@ -22,7 +23,7 @@ CREATING METHODS
 
 def getIntegrationRequestMsg(speed,rotation, ip, port):
     content = {
-        "type": MsgType.INTEGRATION_REQUEST.value,
+        "type": resources.MsgType.INTEGRATION_REQUEST.value,
         "speed" : speed,
         "rotation":rotation,
         "ip": ip,
@@ -34,7 +35,7 @@ def getIntegrationRequestMsg(speed,rotation, ip, port):
 
 def getMovementMsg(id,movement):
     content = {
-        "type": MsgType.MOVEMENT.value,
+        "type": resources.MsgType.MOVEMENT.value,
         "id" : id,
         "movement": movement
     }
@@ -44,7 +45,7 @@ def getMovementMsg(id,movement):
 
 def getSpeedRotationMsg(id,speed,rotation):
     content = {
-        "type": MsgType.SPEED_ROTATION.value,
+        "type": resources.MsgType.SPEED_ROTATION.value,
         "id" : id,
         "speed": speed,
         "rotation": rotation
@@ -55,7 +56,7 @@ def getSpeedRotationMsg(id,speed,rotation):
 
 def getCalibrationMsg(id,delay):
     content = {
-        "type": MsgType.CALIBRATION.value,
+        "type": resources.MsgType.CALIBRATION.value,
         "id" : id,
         "delay": delay}  # add other parameters if needed
     msg = json.dumps(content)

@@ -2,6 +2,9 @@ import socket
 import sys
 import time
 import analytics
+import json
+import resources
+import messages
 
 #do not create instances of this class!!!
 #use the class directly
@@ -24,7 +27,7 @@ def get_response():
     else:
         return None
 
-def start():
+def start(move):
     #creating socket
     BUFFER_SIZE = 100
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -35,10 +38,19 @@ def start():
     while Status.live:
         conn, addr = s.accept()
         if(conn is not None):
-            data = conn.recv(BUFFER_SIZE).decode("utf-8")
-            if(data is not None or len(data) != 0):
+
+            # receiving message
+            msg = conn.recv(BUFFER_SIZE).decode("utf-8")
+            print(msg)
+            if(msg is not None or len(msg) != 0):
                 #set response so main thread can analyze it
                 analytics.end()
-                Status.response = data
+                Status.response = msg
                 Status.awaiting_response = False
+
+                info = json.loads(msg)
+
+                if(info["type"] == resources.MsgType.MOVEMENT.value):
+                    messages.handleMovementMessage(info,move)
+
 

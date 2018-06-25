@@ -1,19 +1,7 @@
 #!/usr/bin/env python
-from enum import Enum
 import socket
 import signal
 import sys
-
-
-class Movement(Enum):
-    FORWARD = 0
-    BACKWARD = 1
-    LEFT = 2
-    RIGHT = 3
-    FORWARD_LEFT = 4
-    FORWARD_RIGHT = 5
-    BACKWARD_LEFT = 6
-    BACKWARD_RIGHT = 7
 
 
 class Server:
