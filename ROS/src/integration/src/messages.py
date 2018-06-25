@@ -12,8 +12,7 @@ def handleMovementMessage(info,controller):
     if move >= 0 and move <= 7:
         key = resources.movementsCodeInverse[move]
         # update current position
-        controller.move_update(resources.moveBindings[key][0], resources.moveBindings[key][1], resources.moveBindings[key][2], resources.moveBindings[key][3])
-        controller.move()
+        controller.move_update(resources.moveBindings[key][0], resources.moveBindings[key][1], resources.moveBindings[key][2], resources.moveBindings[key][3],False)
     return
 
 '''

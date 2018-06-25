@@ -66,8 +66,6 @@ def handleSpeedRotationMessage(info, controller):
     controller.speed = speed
     controller.angular = rotation
 
-    return getAcceptedMessage(controller.car_id)
-
 
 def handleIntegrationRequestMessage(info, controllers,trip,integration_requests):
 

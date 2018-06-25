@@ -19,9 +19,9 @@ class VehicleController:
     car_id = ""
     speed = 0.5
     angular = 1.0
-    increment = [0, 0]           # [direction,angle]
-    step_duration = 100000  # 100 ms per step
-    move_duration = 1000000  # time of velocity = 1 sec
+    increment = [0, 0]          # [direction,angle]
+    step_duration = 100000      # 100 ms per step
+    move_duration = 1000000     # time of velocity = 1 sec
 
     inTraci = False
     route = ""
@@ -37,7 +37,6 @@ class VehicleController:
     '''
     direction=1 if forward or =-1 if backward
     '''
-
     def setIncrement(self, direction, ang, message):
 
         # calculate percentage of movement for the 100 ms

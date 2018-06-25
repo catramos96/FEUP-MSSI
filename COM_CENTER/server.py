@@ -8,7 +8,7 @@ class Server:
 
     TCP_IP = '127.0.0.1'
     TCP_PORT = 5005
-    BUFFER_SIZE = 100  # Normally 1024, but we want fast response
+    BUFFER_SIZE = 150  # Normally 1024, but we want fast response
 
     def __init__(self):
         global socket
@@ -35,14 +35,3 @@ class Server:
         self.s.shutdown(socket.SHUT_WR)
         self.s.close()
         print("Server closed")
-
-#signal.signal(signal.SIGINT, ctrl_z_handler)
-
-
-#i = True
-# while (i == True):
-#    data = conn.recv(BUFFER_SIZE).decode('utf-8')
-#    if not data: break
-#    print ("received data: ", data)
-#    sendMessage(conn, data)  # echo
-# conn.close()

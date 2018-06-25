@@ -18,6 +18,8 @@ import resources
 import datetime
 import client
 import time
+import math
+import threading
 
 def getKey():
     tty.setraw(sys.stdin.fileno())
@@ -36,24 +38,28 @@ class Movement:
     z = 0
     th = 0
     status = 0
-    last_updated = -1
+    last_updated = datetime.datetime.now()
+
+    current_angle = 0
+
+    sem = threading.Semaphore()
 
     def __init__(self):
         start_new_thread(self.check_movement, ())
 
-    def move_update(self,x, y, z, th):
+    def move_update(self,x, y, z, th, from_thread):
+
+        if(not from_thread):
+            self.sem.acquire()
+
+        old_angle_instruction = self.th
+        old_update_instruction = self.last_updated
+
         self.x = x
         self.y = y
         self.z = z
         self.th = th
 
-    def vels(self):
-        return "currently:\tspeed %s\tturn %s " % (self.speed, self.turn)
-
-    def print(self):
-        return " - [%d,%d,%d,%d]" % (self.x, self.y, self.z, self.th)
-
-    def move(self):
         twist = Twist()
         twist.linear.x = self.x*self.speed
         twist.linear.y = self.y*self.speed
@@ -62,23 +68,66 @@ class Movement:
         twist.angular.y = 0
         twist.angular.z = self.th*self.turn
         pub.publish(twist)
+
         self.last_updated = datetime.datetime.now()
 
+        if(not from_thread):
+            self.sem.release()
+
+
+        #print("old_angle_instr.: %f" % (old_angle_instruction))
+ 
+        '''
+        if(old_angle_instruction != 0):
+            elapsed_time = (self.last_updated - old_update_instruction).total_seconds()
+       
+            print("elapsed_time: %f" % (elapsed_time))
+            print("old_angle: %f" %(self.current_angle))
+
+            self.current_angle = self.current_angle + elapsed_time * math.degrees(self.turn) * old_angle_instruction
+
+            print("Turn degrees per second: %f" % (math.degrees(self.turn)))
+            print("Angle increment: %f" % (elapsed_time * math.degrees(self.turn) * old_angle_instruction))
+
+            if(self.current_angle >= 360):
+                self.current_angle = self.current_angle - 360
+            elif(self.current_angle < 0):
+                self.current_angle = self.current_angle + 360
+
+            print("current_angle: %f" % (self.current_angle))
+        '''
+
+
+    def vels(self):
+        return "currently:\tspeed %s\tturn %s " % (self.speed, self.turn)
+
+    def print(self):
+        return " - [%d,%d,%d,%d]" % (self.x, self.y, self.z, self.th)       
+
     def check_movement(self):
-        movement_dur = 100000
+        movement_dur = 0.1 #seconds
 
         while(1):
 
-            if self.last_updated != -1 and [self.x,self.y,self.z,self.th] != [0,0,0,0]:
+            sleep = 0
+            self.sem.acquire()
+
+            # movement was incresed
+            if [self.x,self.y,self.z,self.th] != [0,0,0,0]:
                 elapsed_time = datetime.datetime.now() - self.last_updated
 
-                if(elapsed_time.seconds > 0 or elapsed_time.microseconds >= movement_dur):
-                    self.move_update(0,0,0,0)
-                    self.move()
-                    self.last_updated = -1
-                    time.sleep(0.09)
+                # movement duration is above 100 ms
+                if(elapsed_time.total_seconds() >= movement_dur):
+                    
+                    # stop movement
+                    self.move_update(0,0,0,0,True)
+                    sleep = 0.1
+                # wait until reach the 100 ms (aprox.)
                 else:
-                    time.sleep((movement_dur-elapsed_time.total_seconds()*1000000)/1000000 * 9/10)
+                    sleep = (movement_dur-elapsed_time.total_seconds())
+            
+            self.sem.release()
+            time.sleep(sleep)
 
     
 
@@ -88,12 +137,10 @@ if __name__ == "__main__":
     # turtle1/cmd -> turtlesim subscribed
     # alterar para cmd_vel para controlar o verdadeiro
     pub = rospy.Publisher('turtle1/cmd_vel', Twist, queue_size=1)
-
     rospy.init_node('turtlebot_teleop')
 
     move = Movement()
     start_new_thread(receiver.start, (move,))
-
 
     # Establish connection
     conn = client.Connection()
@@ -142,13 +189,6 @@ if __name__ == "__main__":
                 msg = messages.getSpeedRotationMsg(
                     move.id, move.speed, move.turn)
                 conn.sendMessage(msg)
-
-            else:
-                move.move_update(0, 0, 0, 0)
-                move.last_updated = -1
-                reply = None
-                if (key == '\x03'):
-                    break
 
     except Exception as e:
         print(e)

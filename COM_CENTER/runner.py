@@ -34,8 +34,10 @@ controllers = []
 start_new_thread(messages_listener.listener,(controllers,route,))
 
 # independent vehicles
+'''
 sumo_resources.addCar('independent1', route, "reroutingType")
 sumo_resources.addCar('independent2', route, "reroutingType")
+'''
 
 counter = 0
 n_vehicles_added = 2
@@ -45,11 +47,13 @@ while True:
     for i  in range(0,len(controllers)):
         controllers[i].step()
 
+    '''
     if(counter == 50):   #5sec
         counter = 0
         sumo_resources.addCar('independent'+n_vehicles_added+1, route, "reroutingType")
         sumo_resources.addCar('independent'+n_vehicles_added+2, route, "reroutingType")
         n_vehicles_added = n_vehicles_added + 3
+    '''
 
 
 

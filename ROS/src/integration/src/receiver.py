@@ -41,7 +41,7 @@ def start(move):
 
             # receiving message
             msg = conn.recv(BUFFER_SIZE).decode("utf-8")
-            print(msg)
+            
             if(msg is not None or len(msg) != 0):
                 #set response so main thread can analyze it
                 analytics.end()
@@ -52,5 +52,3 @@ def start(move):
 
                 if(info["type"] == resources.MsgType.MOVEMENT.value):
                     messages.handleMovementMessage(info,move)
-
-
