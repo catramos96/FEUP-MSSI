@@ -41,6 +41,9 @@ sumo_resources.addCar('independent1', route, "reroutingType")
 sumo_resources.addCar('independent2', route, "reroutingType")
 '''
 
+print(traci.simulation.getDeltaT() / 10 )
+
+
 counter = 0
 n_vehicles_added = 2
 while True:
