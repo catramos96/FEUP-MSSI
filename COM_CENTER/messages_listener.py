@@ -47,6 +47,8 @@ def listener(controllers, route):
             elif(info["type"] == msg_resources.MsgType.INTEGRATION_REQUEST.value):
                 reply = messages.getRejectedMessage(id)
                 controller.send_message(reply)
+            elif(info["type"] == msg_resources.MsgType.CALIBRATION.value):
+                messages.handleCalibrationMessage(info,controller)
 
         else:
 

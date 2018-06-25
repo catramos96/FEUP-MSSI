@@ -20,6 +20,7 @@ import vehicle_controller as vc
 import messages_listener
 from thread import start_new_thread
 import sumo_resources
+import calibration
 
 
 traci.start(["sumo-gui", "--start", "-c", "../SUMO/data/hello.sumocfg"])
@@ -32,6 +33,7 @@ controllers = []
 
 # messages listener
 start_new_thread(messages_listener.listener,(controllers,route,))
+start_new_thread(calibration.calibration,(controllers,10,))
 
 # independent vehicles
 '''

@@ -30,9 +30,10 @@ def getKey():
 
 
 class Movement:
+    conn = -1
     id = ''
-    speed = rospy.get_param("~speed", 0.5)
-    turn = rospy.get_param("~turn", 1.0)
+    speed = rospy.get_param("~speed", 0.5)  # meters per second
+    turn = rospy.get_param("~turn", 1.0)    # rad per second
     x = 0
     y = 0
     z = 0
@@ -40,11 +41,12 @@ class Movement:
     status = 0
     last_updated = datetime.datetime.now()
 
-    current_angle = 0
+    current_angle = 0   # in degrees
 
     sem = threading.Semaphore()
 
-    def __init__(self):
+    def __init__(self,conn):
+        self.conn = conn
         start_new_thread(self.check_movement, ())
 
     def move_update(self,x, y, z, th, from_thread):
@@ -70,32 +72,20 @@ class Movement:
         pub.publish(twist)
 
         self.last_updated = datetime.datetime.now()
-
-        if(not from_thread):
-            self.sem.release()
-
-
-        #print("old_angle_instr.: %f" % (old_angle_instruction))
- 
-        '''
+        
+        # calculate current angle in degrees
         if(old_angle_instruction != 0):
             elapsed_time = (self.last_updated - old_update_instruction).total_seconds()
-       
-            print("elapsed_time: %f" % (elapsed_time))
-            print("old_angle: %f" %(self.current_angle))
 
             self.current_angle = self.current_angle + elapsed_time * math.degrees(self.turn) * old_angle_instruction
-
-            print("Turn degrees per second: %f" % (math.degrees(self.turn)))
-            print("Angle increment: %f" % (elapsed_time * math.degrees(self.turn) * old_angle_instruction))
 
             if(self.current_angle >= 360):
                 self.current_angle = self.current_angle - 360
             elif(self.current_angle < 0):
                 self.current_angle = self.current_angle + 360
 
-            print("current_angle: %f" % (self.current_angle))
-        '''
+        if(not from_thread):
+            self.sem.release()
 
 
     def vels(self):
@@ -139,16 +129,14 @@ if __name__ == "__main__":
     pub = rospy.Publisher('turtle1/cmd_vel', Twist, queue_size=1)
     rospy.init_node('turtlebot_teleop')
 
-    move = Movement()
+    move = Movement(client.Connection())
     start_new_thread(receiver.start, (move,))
 
     # Establish connection
-    conn = client.Connection()
-
     msg = messages.getIntegrationRequestMsg(
         move.speed, move.turn, receiver.Status.ip, receiver.Status.port)
     while 1:
-        reply = conn.sendRequest(msg)
+        reply = move.conn.sendRequest(msg)
         print(reply)
         info = json.loads(reply)
         if(info["type"] == resources.MsgType.REPLY_ACCEPTED.value):
@@ -171,7 +159,7 @@ if __name__ == "__main__":
                 print(key + move.print())
                 msg = messages.getMovementMsg(
                     move.id, resources.movementsCode[key].value)
-                conn.sendMessage(msg)
+                move.conn.sendMessage(msg)
 
             # speed and angular
             elif key in resources.speedBindings.keys():
@@ -188,7 +176,7 @@ if __name__ == "__main__":
 
                 msg = messages.getSpeedRotationMsg(
                     move.id, move.speed, move.turn)
-                conn.sendMessage(msg)
+                move.conn.sendMessage(msg)
 
     except Exception as e:
         print(e)

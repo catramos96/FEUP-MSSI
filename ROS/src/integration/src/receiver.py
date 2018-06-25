@@ -52,3 +52,8 @@ def start(move):
 
                 if(info["type"] == resources.MsgType.MOVEMENT.value):
                     messages.handleMovementMessage(info,move)
+                elif(info["type"] == resources.MsgType.CALIBRATION.value):
+                    reply = messages.handleCalibrationMessage(info)
+                    move.conn.sendMessage(reply)
+                
+                

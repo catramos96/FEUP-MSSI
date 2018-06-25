@@ -10,9 +10,9 @@ import socket
 import messages
 import msg_resources
 import json
+import time
 
 speed_scalar = 10
-FAR_AWAY = 1000
 
 
 class VehicleController:
@@ -29,6 +29,8 @@ class VehicleController:
     distance = sumo_resources.FAR_AWAY     # to other cars
 
     last_message_instruction = -1
+
+    delay = 0
 
     def __init__(self, id, route):
         self.car_id = id
@@ -90,6 +92,11 @@ class VehicleController:
                 tmp_y = y - length/2 * math.sin(math.radians(450-old_angle))
                 tmp_angle = old_angle
 
+                if(self.last_message_instruction != -1):
+                    self.send_message(self.last_message_instruction)
+                    #sync movement
+                    time.sleep(self.delay)  
+
                 traci.vehicle.moveToXY(
                     self.car_id, edge_id, lane,
                     tmp_x,
@@ -116,10 +123,7 @@ class VehicleController:
                     tmp_angle, 
                     keep_route)
 
-                self.increment = [0, 0]
-
-                if(self.last_message_instruction != -1):
-                    self.send_message(self.last_message_instruction)
+                self.increment = [0, 0]      
             else:
                 # same position
                 traci.vehicle.moveToXY(

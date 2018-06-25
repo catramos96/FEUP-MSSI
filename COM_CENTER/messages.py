@@ -1,4 +1,5 @@
 from enum import Enum
+from datetime import datetime
 import traci
 import traci.constants as tc
 import curses
@@ -7,6 +8,7 @@ import math
 import numpy as np
 import vehicle_controller
 import msg_resources
+
 
 
 def getAcceptedMessage(id):
@@ -21,6 +23,16 @@ def getRejectedMessage(id):
     content = {
         "type" : msg_resources.MsgType.REPLY_REJECTED.value,
         "id" : id
+    }
+    msg = json.dumps(content)
+    return msg
+
+def getCalibrationMessage(id,date_sent):
+    content = {
+        "type" : msg_resources.MsgType.CALIBRATION.value,
+        "id" : id,
+        "date_sent" : date_sent.strftime('%Y-%m-%d %H:%M:%S.%f'),
+        "date_received" : ""
     }
     msg = json.dumps(content)
     return msg
@@ -89,3 +101,12 @@ def handleIntegrationRequestMessage(info, controllers,trip,integration_requests)
     print("NEW VEHICLE ADDED: " + id)
 
     return getAcceptedMessage(id)
+
+
+def handleCalibrationMessage(info, controller):
+    date_received = datetime.strptime(info["date_received"],'%Y-%m-%d %H:%M:%S.%f')
+    date_sent= datetime.strptime(info["date_sent"],'%Y-%m-%d %H:%M:%S.%f')
+
+    delay = (date_received - date_sent).total_seconds()
+    print("delay %f" % (delay))
+    controller.delay = delay

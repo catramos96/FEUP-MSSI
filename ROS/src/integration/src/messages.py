@@ -3,6 +3,7 @@
 import json
 import turtlebot_teleop
 import resources
+import datetime
 
 
 def handleMovementMessage(info,controller):
@@ -14,6 +15,13 @@ def handleMovementMessage(info,controller):
         # update current position
         controller.move_update(resources.moveBindings[key][0], resources.moveBindings[key][1], resources.moveBindings[key][2], resources.moveBindings[key][3],False)
     return
+
+def handleCalibrationMessage(info):
+
+    info["date_received"] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+    msg = json.dumps(info)
+    return msg
+
 
 '''
 CREATING METHODS
