@@ -102,7 +102,7 @@ def handleIntegrationRequestMessage(info, controllers, trip, integration_request
 
     print("NEW VEHICLE ADDED: " + id)
 
-    return getAcceptedMessage(id)
+    controller.send_message(getAcceptedMessage(id))
 
 
 def handleCalibrationMessage(info, controller):

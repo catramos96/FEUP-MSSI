@@ -20,6 +20,8 @@ import time
 import math
 import threading
 import receiver
+import errno
+import socket
 
 ''' Blocks until a key is pressed '''
 
@@ -181,14 +183,16 @@ if __name__ == "__main__":
 
     # waits for a positive reply to the integration request
     while 1:
-        reply = move.conn.sendRequest(msg)
-        print("RECEIVED: %s" % (msg))
-        info = json.loads(reply)
-        if(info["type"] == resources.MsgType.REPLY_ACCEPTED.value):
-            move.id = info["id"]
-            break
-        else:
+        try:
+            reply = move.conn.sendRequest(msg)
+            print("RECEIVED: %s" % (msg))
+            info = json.loads(reply)
+            if(info["type"] == resources.MsgType.REPLY_ACCEPTED.value):
+                move.id = info["id"]
+                break            
+        except socket.error:
             print("Trying to connect...")
+        
 
     print("Connection established!")
 

@@ -59,4 +59,3 @@ def listener(controllers, route,ip,port):
             if(info["type"] == msg_resources.MsgType.INTEGRATION_REQUEST.value):
                 integration_requests = integration_requests + 1
                 reply = messages.handleIntegrationRequestMessage(info, controllers,route,integration_requests)   
-                controllers[len(controllers)-1].send_message(reply)
