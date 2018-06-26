@@ -76,6 +76,10 @@ def collision(controller, pos):
     rear_bumper_center = get_rear_bumper_point(pos[0], pos[1], angle, length)
     front_bumper_center = pos
 
+    min_dist = FAR_AWAY
+
+    current_center_pos = [pos[0] - length/2 * math.cos(math.radians(450-angle)), pos[1] - length/2 * math.sin(math.radians(450-angle))]
+
     for car_near in nearby_cars:
 
         if(car_near == controller.car_id):
@@ -94,29 +98,43 @@ def collision(controller, pos):
 
         safe_dist = 0
 
+        pos2 = near_front_bumper = traci.vehicle.getPosition(car_near)
+        length2 = traci.vehicle.getLength(car_near)
+        angle2 = traci.vehicle.getAngle(car_near)
+
+        center_pos = [pos2[0] - length2/2 * math.cos(math.radians(450-angle2)), pos2[1] - length2/2 * math.sin(math.radians(450-angle2))]
+
+        tmp = overlap(center_pos,length2/2.2, current_center_pos,length/2.2)
+
+        if(tmp<min_dist):
+            min_dist = tmp
+
+        '''
+
         # front front bumpers
-        tmp = overlap(front_bumper_center, length + safe_dist, near_front_bumper, near_width)
+        min_dist = overlap(front_bumper_center, length + safe_dist, near_front_bumper, near_width)
 
         # front rear
-        tmp2 = overlap(front_bumper_center, length + safe_dist, near_rear_bumper, near_width)
+        tmp = overlap(front_bumper_center, length + safe_dist, near_rear_bumper, near_width)
 
-        if(tmp2 < tmp):
-            tmp = tmp2
+        if(tmp < min_dist):
+            min_dist = tmp
 
         # rear front
-        tmp2 = overlap(rear_bumper_center, length + safe_dist, near_front_bumper, near_width)
+        tmp = overlap(rear_bumper_center, length + safe_dist, near_front_bumper, near_width)
 
-        if(tmp2 < tmp):
-            tmp = tmp2
+        if(tmp < min_dist):
+            min_dist = tmp
 
         # rear rear
-        tmp2 = overlap(rear_bumper_center, length + safe_dist, near_rear_bumper, near_width)
-        if(tmp2 < tmp):
-            tmp = tmp2
+        tmp = overlap(rear_bumper_center, length + safe_dist, near_rear_bumper, near_width)
+        if(tmp < min_dist):
+            min_dist = tmp
+        '''
         
-        controller.distance = tmp
-        if(controller.distance != FAR_AWAY):
-           return True
+    controller.distance = min_dist
+    if(controller.distance != FAR_AWAY):
+        return True
 
 
     return False

@@ -82,6 +82,9 @@ class VehicleController:
                 self.car_id, step_info[tc.VAR_LANE_ID])
             collision = sumo_resources.collision(self, [x, y])
 
+            if(collision):
+                print("COLISION: %f  %f" % (old_distance_value,self.distance))
+
             # move if:
             # - increment was request
             # - it's not stopped at a red light of a semaphore
