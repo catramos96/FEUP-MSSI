@@ -58,8 +58,8 @@ def get_rear_bumper_point(x, y, ang, length):
 
 def overlap(pos, r, pos2, r2):
     if (math.pow(pos2[0]-pos[0], 2) + math.pow(pos[1]-pos2[1], 2) <= math.pow(r + r2, 2)):
-        return True
-    return False
+        return math.pow(pos2[0]-pos[0], 2) + math.pow(pos[1]-pos2[1], 2)
+    return FAR_AWAY
 
 
 def collision(controller, pos):
@@ -92,26 +92,31 @@ def collision(controller, pos):
 
         near_width = traci.vehicle.getWidth(car_near)
 
-        safe_dist = 0.5
+        safe_dist = 0
 
         # front front bumpers
-        if(overlap(front_bumper_center, length + safe_dist, near_front_bumper, near_width)):
-            return True
+        tmp = overlap(front_bumper_center, length + safe_dist, near_front_bumper, near_width)
 
         # front rear
-        if(overlap(front_bumper_center, length + safe_dist, near_rear_bumper, near_width)):
-            return True
+        tmp2 = overlap(front_bumper_center, length + safe_dist, near_rear_bumper, near_width)
 
-        if(overlap(rear_bumper_center, length + safe_dist, near_front_bumper, near_width)):
-            return True
+        if(tmp2 < tmp):
+            tmp = tmp2
 
-        if(overlap(rear_bumper_center, length + safe_dist, near_rear_bumper, near_width)):
-            return True
+        # rear front
+        tmp2 = overlap(rear_bumper_center, length + safe_dist, near_front_bumper, near_width)
 
-        #controller.distance = tmp
-        '''
+        if(tmp2 < tmp):
+            tmp = tmp2
+
+        # rear rear
+        tmp2 = overlap(rear_bumper_center, length + safe_dist, near_rear_bumper, near_width)
+        if(tmp2 < tmp):
+            tmp = tmp2
+        
+        controller.distance = tmp
         if(controller.distance != FAR_AWAY):
            return True
-        '''
+
 
     return False
