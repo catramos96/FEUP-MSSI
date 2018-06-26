@@ -21,6 +21,10 @@ import time
 import math
 import threading
 
+
+''' Blocks until a key is pressed '''
+
+
 def getKey():
     tty.setraw(sys.stdin.fileno())
     select.select([sys.stdin], [], [], 0)
@@ -29,33 +33,46 @@ def getKey():
     return key
 
 
+'''
+Class that registers the received direction instructions
+'''
+
+
 class Movement:
-    conn = -1
-    id = ''
-    speed = rospy.get_param("~speed", 0.5)  # meters per second
-    turn = rospy.get_param("~turn", 1.0)    # rad per second
-    x = 0
+    conn = -1   # current connection with virtual representation
+    id = ''     # virtual representation id
+    simulation_step_dur = 0.1   # in seconds
+
+    # linear velocity in meters per second
+    speed = rospy.get_param("~speed", 0.5)
+    # angular velocity in rad per second
+    turn = rospy.get_param("~turn", 1.0)
+
+    # instruction directions
+    x = 0   # forward if 1, backward if -1
     y = 0
     z = 0
-    th = 0
-    status = 0
+    th = 0  # clockwise if 1, counterclockwise if -1
+
+    status = 0  # show status if 1
+
+    # last time the instruction direction was updated
     last_updated = datetime.datetime.now()
 
-    current_angle = 0   # in degrees
+    sem = threading.Semaphore()  # for synchronization
 
-    sem = threading.Semaphore()
-
-    def __init__(self,conn):
+    def __init__(self, conn):
         self.conn = conn
         start_new_thread(self.check_movement, ())
 
-    def move_update(self,x, y, z, th, from_thread):
+    '''
+    Publishes the new direction instructions
+    '''
+
+    def move_update(self, x, y, z, th, from_thread):
 
         if(not from_thread):
             self.sem.acquire()
-
-        old_angle_instruction = self.th
-        old_update_instruction = self.last_updated
 
         self.x = x
         self.y = y
@@ -72,30 +89,21 @@ class Movement:
         pub.publish(twist)
 
         self.last_updated = datetime.datetime.now()
-        
-        # calculate current angle in degrees
-        if(old_angle_instruction != 0):
-            elapsed_time = (self.last_updated - old_update_instruction).total_seconds()
-
-            self.current_angle = self.current_angle + elapsed_time * math.degrees(self.turn) * old_angle_instruction
-
-            if(self.current_angle >= 360):
-                self.current_angle = self.current_angle - 360
-            elif(self.current_angle < 0):
-                self.current_angle = self.current_angle + 360
 
         if(not from_thread):
             self.sem.release()
 
-
     def vels(self):
-        return "currently:\tspeed %s\tturn %s " % (self.speed, self.turn)
+        return "VELOCITIES :\tspeed %s\tturn %s " % (self.speed, self.turn)
 
     def print(self):
-        return " - [%d,%d,%d,%d]" % (self.x, self.y, self.z, self.th)       
+        return " - [%d,%d,%d,%d]" % (self.x, self.y, self.z, self.th)
+
+    '''
+    Thread: Check if the movement is withing the simulation step duration
+    '''
 
     def check_movement(self):
-        movement_dur = 0.1 #seconds
 
         while(1):
 
@@ -103,41 +111,46 @@ class Movement:
             self.sem.acquire()
 
             # movement was incresed
-            if [self.x,self.y,self.z,self.th] != [0,0,0,0]:
+            if [self.x, self.y, self.z, self.th] != [0, 0, 0, 0]:
                 elapsed_time = datetime.datetime.now() - self.last_updated
 
                 # movement duration is above 100 ms
-                if(elapsed_time.total_seconds() >= movement_dur):
-                    
+                if(elapsed_time.total_seconds() >= self.simulation_step_dur):
+
                     # stop movement
-                    self.move_update(0,0,0,0,True)
+                    self.move_update(0, 0, 0, 0, True)
                     sleep = 0.1
                 # wait until reach the 100 ms (aprox.)
                 else:
-                    sleep = (movement_dur-elapsed_time.total_seconds())
-            
+                    sleep = (self.simulation_step_dur -
+                             elapsed_time.total_seconds())
+
             self.sem.release()
             time.sleep(sleep)
 
-    
 
 if __name__ == "__main__":
     settings = termios.tcgetattr(sys.stdin)
 
-    # turtle1/cmd -> turtlesim subscribed
-    # alterar para cmd_vel para controlar o verdadeiro
+    # turtle1/cmd_vel -> turtlesim subscribed
+    # change to cmd_vel to control a real turtlebot3
     pub = rospy.Publisher('turtle1/cmd_vel', Twist, queue_size=1)
     rospy.init_node('turtlebot_teleop')
 
+    # create movement register
     move = Movement(client.Connection())
+
+    # start thread to listen to incoming messages
     start_new_thread(receiver.start, (move,))
 
-    # Establish connection
+    # establish connection with sumo
     msg = messages.getIntegrationRequestMsg(
         move.speed, move.turn, receiver.Status.ip, receiver.Status.port)
+
+    # waits for a positive reply to the integration request
     while 1:
         reply = move.conn.sendRequest(msg)
-        print(reply)
+        print("RECEIVED: %s" % (reply))
         info = json.loads(reply)
         if(info["type"] == resources.MsgType.REPLY_ACCEPTED.value):
             move.id = info["id"]
@@ -150,18 +163,17 @@ if __name__ == "__main__":
     # Reading keys and send them to sumo
     try:
         print(resources.intro_msg)
-        print(move.vels())
         while(1):
             key = getKey()
 
-            # move
+            # move key
             if key in resources.moveBindings.keys():
-                print(key + move.print())
+                print("KEY PRESSED: %s" % (key + move.print()))
                 msg = messages.getMovementMsg(
                     move.id, resources.movementsCode[key].value)
                 move.conn.sendMessage(msg)
 
-            # speed and angular
+            # speed and angular key
             elif key in resources.speedBindings.keys():
 
                 # update speed and turn

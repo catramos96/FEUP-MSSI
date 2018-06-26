@@ -24,6 +24,8 @@ def listener(controllers, route):
     print("Started listening to incoming messages ...")
 
     while True:
+
+        # blocks until a message is received 
         msg = server.receiveMessage()
         info = json.loads(msg)
 
@@ -34,9 +36,11 @@ def listener(controllers, route):
 
         controller = getController(id, controllers)
 
-        print(msg)
+        print("RECEIVED: %s" % (msg))
 
         if(controller != -1):
+
+            # handle received messages
 
             if(info["type"] == msg_resources.MsgType.MOVEMENT.value):
                 messages.handleMovementMessage(info, controller)

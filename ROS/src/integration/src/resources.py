@@ -9,12 +9,6 @@ Moving around:
    j    k    l
    m    ,    .
 
-For Holonomic mode (strafing), hold down the shift key:
----------------------------
-   U    I    O
-   J    K    L
-   M    <    >
-
 t : up (+z)
 b : down (-z)
 
@@ -57,6 +51,7 @@ speedBindings = {
     'c': (1, .9),
 }
 
+
 class Movement(Enum):
     FORWARD = 0
     BACKWARD = 1
@@ -67,6 +62,7 @@ class Movement(Enum):
     BACKWARD_LEFT = 6
     BACKWARD_RIGHT = 7
 
+
 class MsgType(Enum):
     MOVEMENT = 0
     SPEED_ROTATION = 1
@@ -76,6 +72,7 @@ class MsgType(Enum):
     UNKNOWN = 5
     REPLY_ACCEPTED = 6
     REPLY_REJECTED = 7
+
 
 movementsCode = {
     'i': Movement.FORWARD,
@@ -89,12 +86,12 @@ movementsCode = {
 }
 
 movementsCodeInverse = {
-    Movement.FORWARD.value : 'i',
-    Movement.FORWARD_RIGHT.value : 'o',
-    Movement.FORWARD_LEFT.value : 'u',
-    Movement.BACKWARD.value : ',',
-    Movement.BACKWARD_RIGHT.value:'.',
-    Movement.BACKWARD_LEFT.value:'m',
-    Movement.LEFT.value:'j',
-    Movement.RIGHT.value:'l',
+    Movement.FORWARD.value: 'i',
+    Movement.FORWARD_RIGHT.value: 'o',
+    Movement.FORWARD_LEFT.value: 'u',
+    Movement.BACKWARD.value: ',',
+    Movement.BACKWARD_RIGHT.value: '.',
+    Movement.BACKWARD_LEFT.value: 'm',
+    Movement.LEFT.value: 'j',
+    Movement.RIGHT.value: 'l',
 }

@@ -8,7 +8,7 @@ class Server:
 
     TCP_IP = '127.0.0.1'
     TCP_PORT = 5005
-    BUFFER_SIZE = 150  # Normally 1024, but we want fast response
+    BUFFER_SIZE = 200  # Normally 1024, but we want fast response
 
     def __init__(self):
         global socket

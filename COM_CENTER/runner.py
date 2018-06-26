@@ -22,7 +22,7 @@ from thread import start_new_thread
 import sumo_resources
 import calibration
 
-
+# start simulation
 traci.start(["sumo-gui", "--start", "-c", "../SUMO/data/hello.sumocfg"])
 route = "trip"
 traci.route.add(route, ["E12", "E23"])
@@ -31,8 +31,10 @@ sumo_resources.trackCarsInJunction()
 
 controllers = []
 
-# messages listener
+# messages listener thread
 start_new_thread(messages_listener.listener,(controllers,route,))
+
+# calibration thread
 start_new_thread(calibration.calibration,(controllers,10,))
 
 # independent vehicles
@@ -41,11 +43,10 @@ sumo_resources.addCar('independent1', route, "reroutingType")
 sumo_resources.addCar('independent2', route, "reroutingType")
 '''
 
-print(traci.simulation.getDeltaT() / 10 )
-
 
 counter = 0
 n_vehicles_added = 2
+
 while True:
     traci.simulationStep()
 

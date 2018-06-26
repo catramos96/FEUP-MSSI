@@ -17,8 +17,8 @@ speed_scalar = 10
 
 class VehicleController:
     car_id = ""
-    speed = 0.5
-    angular = 1.0
+    speed = 0.5                 # default
+    angular = 1.0               # default
     increment = [0, 0]          # [direction,angle]
     step_duration = 100000      # 100 ms per step
     move_duration = 1000000     # time of velocity = 1 sec
@@ -38,7 +38,9 @@ class VehicleController:
 
     '''
     direction=1 if forward or =-1 if backward
+    ang=1 if right or =-1 if left
     '''
+
     def setIncrement(self, direction, ang, message):
 
         # calculate percentage of movement for the 100 ms
@@ -94,42 +96,49 @@ class VehicleController:
 
                 if(self.last_message_instruction != -1):
                     self.send_message(self.last_message_instruction)
-                    #sync movement
-                    time.sleep(self.delay)  
+                    # sync movement
+                    time.sleep(self.delay)
 
+                # rotation over the center of the vehicle
+
+                # retreat hald its length
                 traci.vehicle.moveToXY(
                     self.car_id, edge_id, lane,
                     tmp_x,
                     tmp_y,
-                    tmp_angle, 
+                    tmp_angle,
                     keep_route)
 
                 tmp_angle = tmp_angle + self.increment[1]
 
+                # perform rotation
                 traci.vehicle.moveToXY(
                     self.car_id, edge_id, lane,
                     tmp_x,
                     tmp_y,
-                    tmp_angle, 
+                    tmp_angle,
                     keep_route)
 
-                tmp_x = tmp_x + length/2 * math.cos(math.radians(450-tmp_angle))
-                tmp_y = tmp_y + length/2 * math.sin(math.radians(450-tmp_angle))
+                tmp_x = tmp_x + length/2 * \
+                    math.cos(math.radians(450-tmp_angle))
+                tmp_y = tmp_y + length/2 * \
+                    math.sin(math.radians(450-tmp_angle))
 
+                # advance half its length
                 traci.vehicle.moveToXY(
                     self.car_id, edge_id, lane,
                     tmp_x,
                     tmp_y,
-                    tmp_angle, 
+                    tmp_angle,
                     keep_route)
 
-                self.increment = [0, 0]      
+                self.increment = [0, 0]
             else:
                 # same position
                 traci.vehicle.moveToXY(
                     self.car_id, edge_id, lane, pos[0], pos[1], old_angle, keep_route)
 
-    # not tested
+
     def send_message(self, msg):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((self.ip, self.port))
