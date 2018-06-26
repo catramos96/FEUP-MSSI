@@ -43,7 +43,7 @@ if __name__ == "__main__":
     # start simulation
     traci.start(["sumo-gui", "--start", "-c", "../SUMO/data/hello.sumocfg"])
     route = "trip"
-    traci.route.add(route, ["E12", "E23"])
+    traci.route.add(route, ["E23", "E34"])
 
     sumo_resources.trackCarsInJunction()
 
@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
     # independent vehicles
     for i in range(0, n_vehicles):
-        sumo_resources.addCar('independent' + str(i), route, "reroutingType")
+        sumo_resources.addCar('independent' + str(i), "route01", "reroutingType")
 
 
     while True:
