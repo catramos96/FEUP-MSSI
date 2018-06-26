@@ -14,7 +14,6 @@ sumoCmd = []
 import traci
 import traci.constants as tc
 import json
-from server import Server
 import messages
 import vehicle_controller as vc
 import messages_listener
@@ -22,45 +21,49 @@ from thread import start_new_thread
 import sumo_resources
 import calibration
 
-# start simulation
-traci.start(["sumo-gui", "--start", "-c", "../SUMO/data/hello.sumocfg"])
-route = "trip"
-traci.route.add(route, ["E12", "E23"])
+if __name__ == "__main__":
 
-sumo_resources.trackCarsInJunction()
+    if(len(sys.argv) != 6):
+        print(
+            "Wrong number of arguments.\n 'python3 runner.py [sumo_ip] [sumo_port] [step_dur_seconds] [calibration_seconds] [n_vehicles]")
+        exit
 
-controllers = []
+    sumo_ip = sys.argv[1]
+    sumo_port = int(sys.argv[2])
+    step_dur = float(sys.argv[3])
+    calibration_dur = float(sys.argv[4])
+    n_vehicles = int(sys.argv[5])
 
-# messages listener thread
-start_new_thread(messages_listener.listener,(controllers,route,))
+    print("SUMO_IP: %s" % (sumo_ip))
+    print("SUMO_PORT: %d" % (sumo_port))
+    print("STEP_DUR: %f" % (step_dur))
+    print("CALIBRATION (s): %f" % (calibration_dur))
+    print("N_VEHICLES: %d" % (n_vehicles))
 
-# calibration thread
-start_new_thread(calibration.calibration,(controllers,10,))
+    # start simulation
+    traci.start(["sumo-gui", "--start", "-c", "../SUMO/data/hello.sumocfg"])
+    route = "trip"
+    traci.route.add(route, ["E12", "E23"])
 
-# independent vehicles
-'''
-sumo_resources.addCar('independent1', route, "reroutingType")
-sumo_resources.addCar('independent2', route, "reroutingType")
-'''
+    sumo_resources.trackCarsInJunction()
 
+    controllers = []
 
-counter = 0
-n_vehicles_added = 2
+    # messages listener thread
+    start_new_thread(messages_listener.listener, (controllers, route,sumo_ip,sumo_port,))
 
-while True:
-    traci.simulationStep()
+    # calibration thread
+    start_new_thread(calibration.calibration, (controllers, calibration_dur,))
 
-    for i  in range(0,len(controllers)):
-        controllers[i].step()
-
-    '''
-    if(counter == 50):   #5sec
-        counter = 0
-        sumo_resources.addCar('independent'+n_vehicles_added+1, route, "reroutingType")
-        sumo_resources.addCar('independent'+n_vehicles_added+2, route, "reroutingType")
-        n_vehicles_added = n_vehicles_added + 3
-    '''
-
+    # independent vehicles
+    for i in range(0, n_vehicles):
+        sumo_resources.addCar('independent' + str(i), route, "reroutingType")
 
 
-traci.close()
+    while True:
+        traci.simulationStep()
+
+        for i in range(0, len(controllers)):
+            controllers[i].step()
+
+    traci.close()

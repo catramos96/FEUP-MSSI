@@ -11,17 +11,18 @@ Class that establishes a connection with a specific ip and port
 
 
 class Connection:
-    TCP_IP = '127.0.0.1'
-    TCP_PORT = 5005
+    ip = '127.0.0.1'
+    port = 5005
     BUFFER_SIZE = 1024
 
     timer = Timer()
 
-    def __init__(self):
-
+    def __init__(self,ip,port,receiver):
+        self.ip = ip
+        self.port = port
+        self.receiver = receiver
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.s.connect((self.TCP_IP, self.TCP_PORT))
-
+        self.s.connect((self.ip, self.port))
     '''
     Sends a request and blocks until getting a reply
     '''
@@ -29,9 +30,9 @@ class Connection:
     def sendRequest(self, msg):
         self.sendMessage(msg)
 
-        receiver.start_waiting()
+        self.receiver.start_waiting()
         while True:
-            data = receiver.get_response()
+            data = self.receiver.get_response()
             if(data is not None):
                 break
 

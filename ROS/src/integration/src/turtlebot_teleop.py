@@ -13,14 +13,13 @@ import termios
 import tty
 import json
 import messages
-import receiver
 import resources
 import datetime
 import client
 import time
 import math
 import threading
-
+import receiver
 
 ''' Blocks until a key is pressed '''
 
@@ -61,8 +60,11 @@ class Movement:
 
     sem = threading.Semaphore()  # for synchronization
 
-    def __init__(self, conn):
+    def __init__(self, conn,speed,turn,step_dur):
         self.conn = conn
+        self.speed = speed
+        self.turn = turn
+        self.simulation_step_dur = step_dur
         start_new_thread(self.check_movement, ())
 
     '''
@@ -130,27 +132,57 @@ class Movement:
 
 
 if __name__ == "__main__":
+
+    if(len(sys.argv) != 9):
+        print("Wrong number of arguments.\n 'python3 turtlebot_teleop.py [sumo_ip] [sumo_port] [robot_ip] [robot_port] [speed] [turn] [use_simulator] [step_dur_seconds]")
+        exit
+
+    sumo_ip = sys.argv[1]
+    sumo_port = int(sys.argv[2])
+    robot_ip = sys.argv[3]
+    robot_port = int(sys.argv[4])
+    speed = float(sys.argv[5])
+    turn = float(sys.argv[6])
+    use_simulator = int(sys.argv[7])
+    step_dur = float(sys.argv[8])
+
+    print("SUMO_IP: %s" % (sumo_ip))
+    print("SUMO_PORT: %d" % (sumo_port))
+    print("ROBOT_IP: %s" % (robot_ip))
+    print("ROBOT_PORT: %d" % (robot_port))
+    print("SPEED: %f" % (speed))
+    print("TURN: %f" % (turn))
+    print("USE_SIMULATOR: %d" % (use_simulator))
+    print("STEP_DUR (s): %f\n" % (step_dur))
+
+
     settings = termios.tcgetattr(sys.stdin)
 
-    # turtle1/cmd_vel -> turtlesim subscribed
-    # change to cmd_vel to control a real turtlebot3
-    pub = rospy.Publisher('turtle1/cmd_vel', Twist, queue_size=1)
+    # publish to simulator
+    if(use_simulator == 1):
+        pub = rospy.Publisher('turtle1/cmd_vel', Twist, queue_size=1)
+    # publish to robot
+    else:
+        pub = rospy.Publisher('cmd_vel', Twist, queue_size=1)
+
     rospy.init_node('turtlebot_teleop')
 
-    # create movement register
-    move = Movement(client.Connection())
+    receiver = receiver.Status(robot_ip,robot_port)
+
+     # create movement register
+    move = Movement(client.Connection(sumo_ip,sumo_port,receiver),speed,turn,step_dur)
 
     # start thread to listen to incoming messages
     start_new_thread(receiver.start, (move,))
 
     # establish connection with sumo
     msg = messages.getIntegrationRequestMsg(
-        move.speed, move.turn, receiver.Status.ip, receiver.Status.port)
+        move.speed, move.turn, receiver.ip, receiver.port)
 
     # waits for a positive reply to the integration request
     while 1:
         reply = move.conn.sendRequest(msg)
-        print("RECEIVED: %s" % (reply))
+        print("RECEIVED: %s" % (msg))
         info = json.loads(reply)
         if(info["type"] == resources.MsgType.REPLY_ACCEPTED.value):
             move.id = info["id"]

@@ -6,14 +6,16 @@ import sys
 
 class Server:
 
-    TCP_IP = '127.0.0.1'
-    TCP_PORT = 5005
+    ip = '127.0.0.1'
+    port= 5005
     BUFFER_SIZE = 200  # Normally 1024, but we want fast response
 
-    def __init__(self):
+    def __init__(self,ip,port):
         global socket
+        self.ip = ip
+        self.port = port
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.s.bind((self.TCP_IP, self.TCP_PORT))
+        self.s.bind((self.ip, self.port))
         self.s.listen(10)
 
     def sendMessage(self, message):

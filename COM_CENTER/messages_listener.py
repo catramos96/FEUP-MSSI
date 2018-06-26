@@ -14,9 +14,9 @@ def getController(id, controllers):
     return -1
 
 
-def listener(controllers, route):
+def listener(controllers, route,ip,port):
 
-    server = Server()
+    server = Server(ip,port)
     server.acceptConnection()
 
     integration_requests = 0

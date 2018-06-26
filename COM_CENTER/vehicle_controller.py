@@ -1,6 +1,5 @@
 import os
 import sys
-from server import Server
 import traci
 import traci.constants as tc
 import math
