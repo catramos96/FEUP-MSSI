@@ -82,6 +82,12 @@ class VehicleController:
                 self.car_id, step_info[tc.VAR_LANE_ID])
             collision = sumo_resources.collision(self, [x, y])
 
+            '''
+            if(collision ==True):
+                print("COLISION: %f  %f" % (old_distance_value,self.distance))
+
+            '''
+
             # move if:
             # - increment was request
             # - it's not stopped at a red light of a semaphore
@@ -136,7 +142,6 @@ class VehicleController:
                 # same position
                 traci.vehicle.moveToXY(
                     self.car_id, edge_id, lane, pos[0], pos[1], old_angle, keep_route)
-
 
     def send_message(self, msg):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
